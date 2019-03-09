@@ -14,7 +14,6 @@ namespace Artice.LogicCore
 			return services
 				.AddArtice(buildAction)
 				.AddScoped<ILogic, TLogicModule>()
-				.AddScoped<IServiceLocator, ServiceLocator>()
 				.AddScoped<IIncomingMessageHandler, LogicManager>()
 				.AddSingleton<IContextStorage, ContextStorage>(); 
 		}
