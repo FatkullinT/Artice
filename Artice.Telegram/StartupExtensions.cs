@@ -20,16 +20,9 @@ namespace Artice.Telegram
 			var configuration = new TelegramProviderConfiguration();
 			configure(configuration);
 
-			builder.Services.AddScoped<TelegramHandler>();
-
-			builder.Services.AddScoped(provider => new TelegramBot(
-				provider.GetService<IMessageQueueFactory>(),
-				provider.GetService<ILogger<TelegramBot>>(),
-				provider.GetService<IMapper>(),
-				configuration));
-
-			builder.UseProvider<TelegramBot>();
-
+			builder.Services.AddSingleton(configuration);
+			builder.UseProvider<TelegramOutgoingMessageProvider>();
+			builder.Services.AddScoped<TelegramUpdateHandler>();
 			if (builder.Services.All(descriptor => descriptor.ServiceType != typeof(IMapper)))
 				builder.Services.AddAutoMapper();
 

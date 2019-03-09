@@ -25,7 +25,7 @@ namespace Artice.Core
 			_rootServiceProvider = rootServiceProvider;
 
 			_handlerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
-				.Where(type => typeof(IRequestHandler).IsAssignableFrom(type))
+				.Where(type => typeof(IUpdateHandler).IsAssignableFrom(type))
 				.SelectMany(type =>
 					type.GetCustomAttributes<HandlerRouteAttribute>()
 						.Select(attr => new { Type = type, Route = attr.Route }))
@@ -39,10 +39,17 @@ namespace Artice.Core
 			{
 				using (var scope = _rootServiceProvider.CreateScope())
 				{
-					var handler = (IRequestHandler)scope.ServiceProvider.GetService(type);
-					if (handler != null && handler.CheckRequest(context.Request))
+					var updateHandler = (IUpdateHandler)scope.ServiceProvider.GetService(type);
+					if (updateHandler != null && await updateHandler.CheckRequest(context.Request))
 					{
-						await handler.HandleAsync(context);
+						var incomingMessage = await updateHandler.HandleAsync(context);
+						var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
+
+						foreach (var handler in handlers)
+						{
+							await handler.Handle(incomingMessage);
+						}
+
 						return;
 					}
 				}

@@ -13,14 +13,13 @@ namespace Artice.Core
 			Services = services;
 		}
 
-		public List<Func<IServiceProvider, IChatBot>> ProviderFactories { get; } = new List<Func<IServiceProvider, IChatBot>>();
-
 		public IServiceCollection Services { get; }
 
 		public void UseProvider<TProvider>() 
-			where TProvider : IChatBot
+			where TProvider : class, IOutgoingMessageProvider
 		{
-			ProviderFactories.Add(serviceProvider => serviceProvider.GetService<TProvider>());
+			Services.AddScoped<TProvider>();
+			Services.AddScoped<IOutgoingMessageProvider>(provider => provider.GetRequiredService<TProvider>());
 		}
 	}
 }

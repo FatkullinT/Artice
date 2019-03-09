@@ -8,11 +8,11 @@ namespace Artice.Core.Args
     {
         public IncomingMessage[] Messages { get; private set; }
 
-        public IChatBot ChatBot { get; private set; }
+        public IOutgoingMessageProvider OutgoingMessageProvider { get; private set; }
 
-        public UpdateEventArgs(IncomingMessage[] messages, IChatBot chatBot)
+        public UpdateEventArgs(IncomingMessage[] messages, IOutgoingMessageProvider outgoingMessageProvider)
         {
-            ChatBot = chatBot;
+            OutgoingMessageProvider = outgoingMessageProvider;
             Messages = messages;
         }
     }

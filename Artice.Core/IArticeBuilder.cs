@@ -8,6 +8,6 @@ namespace Artice.Core
 		IServiceCollection Services { get; }
 
 		void UseProvider<TProvider>()
-			where TProvider : IChatBot;
+			where TProvider : class, IOutgoingMessageProvider;
 	}
 }

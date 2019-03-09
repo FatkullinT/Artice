@@ -1,5 +1,6 @@
 ﻿using System;
 using Artice.Core;
+using Artice.LogicCore.Context;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,13 +9,14 @@ namespace Artice.LogicCore
 	public static class StartupExtensions
 	{
 		public static IServiceCollection AddArtice<TLogicModule>(this IServiceCollection services, Action<IArticeBuilder> buildAction = null)
-			where TLogicModule : class, IBotLogic
+			where TLogicModule : class, ILogic
 		{
 			return services
 				.AddArtice(buildAction)
-				.AddSingleton<IBotLogic, TLogicModule>()
-				.AddSingleton<IServiceLocator, ServiceLocator>()
-				.AddSingleton<IHostedService, BotLogicManager>(); 
+				.AddScoped<ILogic, TLogicModule>()
+				.AddScoped<IServiceLocator, ServiceLocator>()
+				.AddScoped<IIncomingMessageHandler, LogicManager>()
+				.AddSingleton<IContextStorage, ContextStorage>(); 
 		}
 	}
 }

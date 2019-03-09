@@ -16,16 +16,18 @@ namespace Artice.Telegram.MapConfig
         {
             CreateMap<Message, IncomingMessage>()
                 .ForMember(dest => dest.Attachments, method => method.MapFrom(src => src))
-                .ForMember(dest => dest.CallbackData, method => method.Ignore());
+                .ForMember(dest => dest.CallbackData, method => method.Ignore())
+                .ForMember(dest => dest.MessengerId, method => method.Ignore());
 
             CreateMap<CallbackQuery, IncomingMessage>()
                 .ForMember(dest => dest.Time, method => method.Ignore())
                 .ForMember(dest => dest.Attachments, method => method.Ignore())
                 .ForMember(dest => dest.Text, method => method.Ignore())
                 .ForMember(dest => dest.Chat,
-                    method => method.MapFrom(src => new Core.Models.Chat {Id = src.From.Id.ToString()}));
+                    method => method.MapFrom(src => new Core.Models.Chat {Id = src.From.Id.ToString()}))
+                .ForMember(dest => dest.MessengerId, method => method.Ignore());
 
-            CreateMap<Chat, Core.Models.Chat>();
+			CreateMap<Chat, Core.Models.Chat>();
 
             CreateMap<User, Core.Models.User>();
 

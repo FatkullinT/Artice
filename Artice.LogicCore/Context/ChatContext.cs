@@ -6,8 +6,6 @@ namespace Artice.LogicCore.Context
 {
     public class ChatContext
     {
-        public IServiceLocator ServiceLocator { get; }
-
         public Recipient Recipient { get; }
 
         public DateTime CreatedAt { get; }
@@ -18,9 +16,8 @@ namespace Artice.LogicCore.Context
 
         private readonly Dictionary<string, object> _parameters;
 
-        public ChatContext(Recipient recipient, IServiceLocator serviceLocator)
+        public ChatContext(Recipient recipient)
         {
-            ServiceLocator = serviceLocator;
             _parameters = new Dictionary<string, object>();
             Recipient = recipient;
             CreatedAt = DateTime.UtcNow;

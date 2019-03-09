@@ -25,7 +25,7 @@ namespace Artice.Core
 		{
 			var builder = new ArticeBuilder(services);
 			build?.Invoke(builder);
-			services.AddSingleton<IBotStorage>(provider => new BotStorage(provider, builder.ProviderFactories));
+			services.AddScoped<IOutgoingMessageProviderFactory, OutgoingMessageProviderFactory>();
 			services.AddSingleton<ArticeMiddleware>();
 			return services;
 		}

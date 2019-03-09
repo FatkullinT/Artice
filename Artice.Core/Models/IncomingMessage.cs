@@ -6,6 +6,8 @@ namespace Artice.Core.Models
     {
         public string Id { get;  set; }
 
+        public string MessengerId { get; set; }
+
         public User From { get; set; }
 
         public Chat Chat { get; set; }

@@ -6,9 +6,16 @@ using Artice.LogicCore.Context.Args;
 
 namespace Artice.LogicCore.Context
 {
-    public class ContextStorage : IDisposable
-    {
-        private Dictionary<Recipient, ChatContext> _contexts;
+	public interface IContextStorage : IDisposable
+	{
+		IEnumerable<ChatContext> Contexts { get; }
+		ChatContext Get(Recipient recipient);
+		ChatContext Get(string botName, RecipientType recipientType, string recipientId);
+	}
+
+	public class ContextStorage : IContextStorage
+	{
+        private readonly Dictionary<Recipient, ChatContext> _contexts;
 
         private readonly Timer _cleanTimer;
 
@@ -16,11 +23,8 @@ namespace Artice.LogicCore.Context
 
         public IEnumerable<ChatContext> Contexts => _contexts.Values;
 
-        private readonly IServiceLocator _serviceLocator;
-
-        public ContextStorage(IServiceLocator serviceLocator)
+        public ContextStorage()
         {
-            _serviceLocator = serviceLocator;
             _contexts = new Dictionary<Recipient, ChatContext>();
 			_contextLifeTime = new TimeSpan(0, 10, 0);
 			_cleanTimer = new Timer(180000);
@@ -50,7 +54,7 @@ namespace Artice.LogicCore.Context
             }
             else
             {
-                context = new ChatContext(recipient, _serviceLocator);
+                context = new ChatContext(recipient);
                 _contexts.Add(recipient, context);
 
             }

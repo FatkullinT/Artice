@@ -9,12 +9,12 @@ namespace Artice.LogicCore
     {
         protected readonly ChatContext Context;
 
-        protected readonly IChatBot ChatBot;
+        protected readonly IOutgoingMessageProvider OutgoingMessageProvider;
 
-        protected CommandHandler(ChatContext context, IChatBot chatBot)
+        protected CommandHandler(ChatContext context, IOutgoingMessageProvider outgoingMessageProvider)
         {
             Context = context;
-            ChatBot = chatBot;
+            OutgoingMessageProvider = outgoingMessageProvider;
         }
 
         public abstract Task<OutgoingMessage> Handle(IncomingMessage incomingMessage);
