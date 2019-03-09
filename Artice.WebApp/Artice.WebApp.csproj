@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Artice.LogicCore\Artice.LogicCore.csproj" />
-    <ProjectReference Include="..\Artice.MessageQueues.InMemory\Artice.MessageQueues.InMemory.csproj" />
     <ProjectReference Include="..\Artice.Telegram\Artice.Telegram.csproj" />
   </ItemGroup>
 

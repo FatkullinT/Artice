@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using Artice.Core;
 using Artice.LogicCore;
-using Artice.MessageQueues.InMemory;
 using Artice.Telegram;
 using Extreme.Net;
 using Microsoft.AspNetCore.Builder;
@@ -32,8 +31,6 @@ namespace Artice.WebApp
 				builder.UseTelegramProvider(configuration => configuration
 						.SetAccessToken(Configuration["Telegram:AccessToken"])
 						.UseHttpMessageHandler(new ProxyHandler(new Socks5ProxyClient("127.0.0.1", 9150)))));
-
-			services.AddInMemoryMessageQueue();
 		}
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)

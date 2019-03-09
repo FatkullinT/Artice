@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Telegram", "Artice.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.WebApp", "Artice.WebApp\Artice.WebApp.csproj", "{3AB840BC-E551-4103-8A09-ED0350572E78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.LogicCore", "Artice.LogicCore\Artice.LogicCore.csproj", "{DD743B32-F237-467C-BD2C-EF5157756B7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.MessageQueues.InMemory", "Artice.MessageQueues.InMemory\Artice.MessageQueues.InMemory.csproj", "{49B9DDD7-DD37-4024-9EC8-AD5E3F5DAB7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.LogicCore", "Artice.LogicCore\Artice.LogicCore.csproj", "{DD743B32-F237-467C-BD2C-EF5157756B7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{DD743B32-F237-467C-BD2C-EF5157756B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD743B32-F237-467C-BD2C-EF5157756B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD743B32-F237-467C-BD2C-EF5157756B7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49B9DDD7-DD37-4024-9EC8-AD5E3F5DAB7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49B9DDD7-DD37-4024-9EC8-AD5E3F5DAB7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49B9DDD7-DD37-4024-9EC8-AD5E3F5DAB7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49B9DDD7-DD37-4024-9EC8-AD5E3F5DAB7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

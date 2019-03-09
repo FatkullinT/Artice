@@ -6,13 +6,6 @@ using Artice.LogicCore.Context.Args;
 
 namespace Artice.LogicCore.Context
 {
-	public interface IContextStorage : IDisposable
-	{
-		IEnumerable<ChatContext> Contexts { get; }
-		ChatContext Get(Recipient recipient);
-		ChatContext Get(string botName, RecipientType recipientType, string recipientId);
-	}
-
 	public class ContextStorage : IContextStorage
 	{
         private readonly Dictionary<Recipient, ChatContext> _contexts;
