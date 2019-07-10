@@ -1,4 +1,0 @@
-language: csharp
-solution: Artice.sln
-script:
-  - msbuild /p:Configuration=Release Artice.sln
