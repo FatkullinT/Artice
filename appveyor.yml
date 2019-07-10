@@ -1,6 +1,14 @@
-version: 0.9.0
+version: 0.9.{build}
 image: Visual Studio 2017
 configuration: Release
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}$(package_suffix)'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 before_build:
 - cmd: dotnet restore
 build:
@@ -13,3 +21,4 @@ deploy:
     secure: 16bnEoTAw97sQU9DAAzFuO5yWGGCQaKRo5HSRKaP3IuqWVDcPWzDKgRrQhtpEaq2
   skip_symbols: true
   artifact: /.*\.nupkg/
+  
