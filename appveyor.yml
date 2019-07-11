@@ -1,14 +1,29 @@
-version: 0.9.{build}-{branch}
+environment:
+  ProductVersion: 0.9
+
+
+init:
+  - ps: >-
+      if ($env:APPVEYOR_REPO_BRANCH -eq "master")
+      {
+          Update-AppveyorBuild -Version "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER"         
+      }
+      else
+      {
+          Update-AppveyorBuild -Version "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER-$env:APPVEYOR_REPO_BRANCH$"
+      }
+      Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER.1"
+
 image: Visual Studio 2017
 configuration: Release
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
   version: '{version}'
-  package_version: '{version}$(package_suffix)'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
+  package_version: '{version}'
+  assembly_version: '$(FileVersion)'
+  file_version: '$(FileVersion)'
+  informational_version: '$(FileVersion)'
 before_build:
 - cmd: dotnet restore
 build:
