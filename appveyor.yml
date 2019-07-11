@@ -10,9 +10,9 @@ init:
       }
       else
       {
-          Update-AppveyorBuild -Version "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER-$env:APPVEYOR_REPO_BRANCH$"
+          Update-AppveyorBuild -Version "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER-$env:APPVEYOR_REPO_BRANCH"
       }
-      Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.$env:APPVEYOR_BUILD_NUMBER.1"
+      Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.0.$env:APPVEYOR_BUILD_NUMBER"
 
 image: Visual Studio 2017
 configuration: Release
