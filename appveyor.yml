@@ -31,7 +31,7 @@ build:
   verbosity: minimal
 deploy:
 - provider: NuGet
-  server: https://www.myget.org/F/artice-test/api/v2/package
+  server: https://www.myget.org/F/artice/api/v2/package
   api_key:
     secure: 16bnEoTAw97sQU9DAAzFuO5yWGGCQaKRo5HSRKaP3IuqWVDcPWzDKgRrQhtpEaq2
   skip_symbols: true
