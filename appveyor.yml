@@ -1,6 +1,9 @@
 environment:
   ProductVersion: 0.9
 
+  
+  CODECOV_TOKEN:
+    secure: tfuWf0tytpb8+HItUm0jhB/sXOx0K3GJMHLbn3+FKV1EfnCncRE6iAHz0Ytlt9nC
 
 init:
   - ps: >-
@@ -14,7 +17,7 @@ init:
       }
       Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.0.$env:APPVEYOR_BUILD_NUMBER"
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 dotnet_csproj:
   patch: true
@@ -24,8 +27,12 @@ dotnet_csproj:
   assembly_version: '$(FileVersion)'
   file_version: '$(FileVersion)'
   informational_version: '$(FileVersion)'
+
 before_build:
-- cmd: dotnet restore
+- dotnet restore
+- choco install opencover.portable
+- choco install codecov
+
 build:
   publish_nuget: true
   verbosity: minimal
@@ -36,4 +43,8 @@ deploy:
     secure: 16bnEoTAw97sQU9DAAzFuO5yWGGCQaKRo5HSRKaP3IuqWVDcPWzDKgRrQhtpEaq2
   skip_symbols: true
   artifact: /.*\.nupkg/
+
+test_script:
+- OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:test -filter:"+[Artice*]* -[*.Tests]* -[*.Testing*]*" -output:".\Artice_coverage.xml" -oldstyle
+- codecov -f "Artice_coverage.xml"
   
