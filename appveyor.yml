@@ -14,7 +14,7 @@ init:
       }
       Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.0.$env:APPVEYOR_BUILD_NUMBER"
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 configuration: Release
 dotnet_csproj:
   patch: true
