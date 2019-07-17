@@ -1,0 +1,15 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Artice.Core.Models;
+
+namespace Artice.Core.OutgoingMessages
+{
+	public interface IOutgoingMessageProvider
+	{
+		string MessengerId { get; }
+
+		Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken());
+
+		Task GetFileContentAsync(FileReference file, CancellationToken cancellationToken = new CancellationToken());
+	}
+}
