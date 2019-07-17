@@ -45,6 +45,6 @@ deploy:
   artifact: /.*\.nupkg/
 
 test_script:
-- OpenCover.Console.exe -register:user -target:"dotnet" -targetargs:test -filter:"+[Artice*]* -[*.Tests]* -[*.Testing*]*" -output:".\Artice_coverage.xml" -oldstyle
+- OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:test -filter:"+[Artice*]* -[*.Tests]* -[*.Testing*]*" -output:".\Artice_coverage.xml" -oldstyle
 - codecov -f "Artice_coverage.xml"
   
