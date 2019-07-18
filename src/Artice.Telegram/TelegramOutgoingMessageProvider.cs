@@ -44,8 +44,9 @@ namespace Artice.Telegram
 
 			var sendResult =
 				await
-					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id, message.Text,
+					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id,   message.Text,
 						replyMarkup: _mapper.Map<InlineKeyboardMarkup>(message.InlineKeyboard),
+						parseMode: ParseMode.Markdown,
 						cancellationToken: cancellationToken);
 			//return sendResult.Ok || sendResult.Code != 429;
 		}
@@ -65,7 +66,8 @@ namespace Artice.Telegram
 							_client.GetAsync<Models.File>(GetMethodPath("getFile"), parameters, cancellationToken);
 					fileInfo = result.ResultObject;
 					
-				file.Url = new Uri(string.Concat(Consts.BaseUrl, Consts.FilePath, "/", _configuration.AccessToken, "/", fileInfo.FilePath));
+				file.Url = new Uri(string.Concat(Consts.BaseUrl, Consts.FilePath, _configuration.AccessToken, "/", fileInfo.FilePath));
+				file.FileName = file.FileName ?? System.IO.Path.GetFileName(file.Url.LocalPath);
 			}
 			if (file.ReferenceType == FileReferenceType.Url)
 			{
@@ -137,7 +139,7 @@ namespace Artice.Telegram
 			bool disableNotification = false,
 			int replyToMessageId = 0,
 			IReplyMarkup replyMarkup = null,
-			ParseMode parseMode = ParseMode.Markdown,
+			ParseMode parseMode = ParseMode.Default,
 			CancellationToken cancellationToken = default)
 		{
 			var additionalParameters = new Dictionary<string, object>();

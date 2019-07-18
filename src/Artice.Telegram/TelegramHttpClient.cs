@@ -45,9 +45,8 @@ namespace Artice.Telegram
 		{
 			var payload = JsonConvert.SerializeObject(parameters);
 			var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
-			Task<HttpResponseMessage> response = _httpClient.PostAsync(methodPath, httpContent, cancellationToken);
-			var res = response.GetAwaiter().GetResult();
-			return JsonConvert.DeserializeObject<ApiResponse<T>>(await res.Content.ReadAsStringAsync());
+			HttpResponseMessage response = await _httpClient.PostAsync(methodPath, httpContent, cancellationToken);
+			return JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
 		}
 
 		public async Task<DownloadedFile> DownloadFile(Uri fileUrl,
