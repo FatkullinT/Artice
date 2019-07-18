@@ -2,6 +2,6 @@
 {
     public abstract class Attachment
     {
-        public FileReference File;
+        public IFile File;
     }
 }

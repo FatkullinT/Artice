@@ -8,8 +8,6 @@ namespace Artice.Core.OutgoingMessages
 	{
 		string MessengerId { get; }
 
-		Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken());
-
-		Task GetFileContentAsync(FileReference file, CancellationToken cancellationToken = new CancellationToken());
+		Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = default);
 	}
 }

@@ -6,8 +6,6 @@ using Artice.Core.Models;
 using Artice.Core.OutgoingMessages;
 using Artice.Extensions;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.Win32.SafeHandles;
 
 namespace Artice.WebApp
 {
@@ -50,15 +48,16 @@ namespace Artice.WebApp
 		private async Task<OutgoingMessage> SaveFile(Attachment attachment, IncomingMessage message, IOutgoingMessageProvider outgoingMessageProvider)
 		{
 			var file = attachment.File;
-			await outgoingMessageProvider.GetFileContentAsync(file);
-			using (var stream = File.Create($"c:\\temp\\{file.FileName}"))
+			using (var stream = File.Create($"c:\\temp\\{await file.GetNameAsync()}"))
 			{
-				file.Content.Seek(0, SeekOrigin.Begin);
-				file.Content.CopyTo(stream);
+				using (var srcStream = await file.OpenReadStreamAsync())
+				{
+					await srcStream.CopyToAsync(stream);
+				}
 			}
 
 			return message.GetResponse(
-				$"Сохранен файл типа {attachment.GetType()} с именем {ReflectMarkdown(attachment.File.FileName)}");
+				$"Сохранен файл типа {attachment.GetType()} с именем {ReflectMarkdown(await file.GetNameAsync())}");
 		}
 
 		string ReflectMarkdown(string message)
