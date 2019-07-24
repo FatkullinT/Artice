@@ -18,26 +18,22 @@ namespace Artice.Telegram
 
 
 		private readonly IMapper _mapper;
+        private readonly Func<ITelegramHttpClient> _clientConstructor;
 
-		private readonly ITelegramHttpClient _client;
 
-		private readonly TelegramProviderConfiguration _configuration;
-
-		protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
+        protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
 
 
 		public string MessengerId => Consts.TelegramId;
 
 		public TelegramOutgoingMessageProvider(
 			IMapper mapper,
-			ITelegramHttpClient client,
-			TelegramProviderConfiguration configuration)
-			
-		{
-			_mapper = mapper;
-			_client = client;
-			_configuration = configuration;
-		}
+			Func<ITelegramHttpClient> clientConstructor)
+
+        {
+            _mapper = mapper;
+            _clientConstructor = clientConstructor;
+        }
 
 		public async Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken())
 		{
@@ -97,7 +93,7 @@ namespace Artice.Telegram
 			if (!string.IsNullOrEmpty(typeInfo.Value))
 				additionalParameters.Add(typeInfo.Value, content);
 
-			return _client.PostAsync<Message>(GetMethodPath(typeInfo.Key), additionalParameters, cancellationToken);
+			return _clientConstructor().PostAsync<Message>(typeInfo.Key, additionalParameters, cancellationToken);
 			
 		}
 
@@ -122,13 +118,8 @@ namespace Artice.Telegram
 			if (cacheTime != 0)
 				parameters.Add("cache_time", cacheTime);
 
-			return _client.PostAsync<bool>(GetMethodPath("answerCallbackQuery"), parameters, cancellationToken);
+			return _clientConstructor().PostAsync<bool>("answerCallbackQuery", parameters, cancellationToken);
 			
-		}
-
-		private string GetMethodPath(string methodName)
-		{
-			return string.Concat(Consts.ApiPath, _configuration.AccessToken, "/", methodName);
 		}
 	}
 }

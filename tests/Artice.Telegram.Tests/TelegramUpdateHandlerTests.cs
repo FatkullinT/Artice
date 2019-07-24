@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Artice.Telegram.Tests
 {
-	public class TelegramUpdateHandlerTests
+    public class TelegramUpdateHandlerTests
 	{
 		[Fact]
 		public void Convert_TextMessage_IncomingMessageWithText()
@@ -39,7 +39,10 @@ namespace Artice.Telegram.Tests
 		{
 			//arrange
 			var fixture = new Fixture();
-			IMapper mapper = new Mapper(new MapperConfiguration(expression => expression.AddProfile(new TelegramMapProfile())));
+			IMapper mapper = new Mapper(new MapperConfiguration(expression =>
+            {
+                expression.AddProfile(new TelegramMapProfile());
+            }));
 			var handler = new TelegramUpdateHandler(mapper);
 			var update = new Update()
 			{

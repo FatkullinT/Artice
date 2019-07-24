@@ -1,22 +1,19 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Artice.Core.Models
 {
 	public interface IFile
 	{
-		Task<string> GetNameAsync();
+		Task<string> GetNameAsync(CancellationToken cancellationToken = default);
 
-		Task<int> GetFileSizeAsync();
+		Task<int> GetFileSizeAsync(CancellationToken cancellationToken = default);
 
-		Task<string> GetMimeTypeAsync();
+		Task<string> GetMimeTypeAsync(CancellationToken cancellationToken = default);
 
-		Task<Uri> GetFileUrlAsync();
-
-		Task<Uri> GetPlayerUrlAsync();
-
-		Task<Stream> OpenReadStreamAsync();
+        Task<Stream> OpenReadStreamAsync(CancellationToken cancellationToken = default);
 
 		string Serialize();
 	}
