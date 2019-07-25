@@ -32,7 +32,7 @@ namespace Artice.WebApp
 				var count = 0;
 				foreach (var attachment in message.Attachments)
 				{
-					var savedFileMessage = SaveFile(attachment, message, outgoingMessageProvider);
+					var savedFileMessage = SaveFile(attachment, message);
 					yield return savedFileMessage;
 					count++;
 				}
@@ -45,7 +45,7 @@ namespace Artice.WebApp
 			}
 		}
 
-		private async Task<OutgoingMessage> SaveFile(Attachment attachment, IncomingMessage message, IOutgoingMessageProvider outgoingMessageProvider)
+		private async Task<OutgoingMessage> SaveFile(Attachment attachment, IncomingMessage message)
 		{
 			var file = attachment.File;
 			using (var stream = File.Create($"c:\\temp\\{await file.GetNameAsync()}"))
