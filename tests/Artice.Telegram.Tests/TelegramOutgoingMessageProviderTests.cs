@@ -1,8 +1,9 @@
 ﻿using Artice.Core.Models;
-using Artice.Telegram.MapConfig;
+using Artice.Telegram.Mapping;
+using Artice.Telegram.Models.ReplyMarkups;
 using Artice.Telegram.Tests.Mocks;
+using Artice.Testing.Core;
 using AutoFixture;
-using AutoMapper;
 using Xunit;
 
 namespace Artice.Telegram.Tests
@@ -14,25 +15,30 @@ namespace Artice.Telegram.Tests
         {
             //arrange
             var fixture = new Fixture();
-            var mapper = new Mapper(new MapperConfiguration(expression => expression.AddProfile(new TelegramMapProfile())));
-            var clientMock = new TelegramHttpClientMock();
-            var config = fixture.Create<TelegramProviderConfiguration>();
-
-            var provider = new TelegramOutgoingMessageProvider(
-                mapper,
-                () => clientMock.Object);
 
             var message = fixture.Build<OutgoingMessage>()
                 .Without(outgoingMessage => outgoingMessage.Attachments)
                 .Create();
 
+            var telegramKeyboardMarkup = fixture.Build<InlineKeyboardMarkup>().Create();
+            var mapper = new OutgoingMessageMapperMock().Returns(telegramKeyboardMarkup);
+            var clientMock = new TelegramHttpClientMock();
+
+            var provider = new TelegramOutgoingMessageProvider(
+                mapper.Object,
+                () => clientMock.Object);
+
             //act
             await provider.SendMessageAsync(message);
 
             //assert
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
             clientMock.VerifyPost<Telegram.Models.Message>("sendMessage",
-            parameters => (string)parameters["chat_id"] == message.Chat.Id
-                          && (string)parameters["text"] == message.Text);
+                parameters => (string) parameters["chat_id"] == message.Chat.Id
+                              && (string) parameters["text"] == message.Text
+                              && ReferenceEquals(parameters["reply_markup"], telegramKeyboardMarkup));
+            mapper.VerifyNoOtherCalls();
+            clientMock.VerifyNoOtherCalls();
         }
     }
 }

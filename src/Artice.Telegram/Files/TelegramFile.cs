@@ -8,7 +8,7 @@ using System.Net.Http;
 
 namespace Artice.Telegram.Files
 {
-    internal class TelegramFile : IFile
+    public class TelegramFile : IFile
     {
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 

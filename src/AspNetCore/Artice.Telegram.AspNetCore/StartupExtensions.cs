@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Artice.Core.AspNetCore;
 using Artice.Core.IncomingMessages;
+using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
-using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Artice.Telegram.AspNetCore
@@ -29,9 +28,9 @@ namespace Artice.Telegram.AspNetCore
 
             configureHttpClient?.Invoke(httpClientBuilder);
 
-
-            if (builder.Services.All(descriptor => descriptor.ServiceType != typeof(IMapper)))
-                builder.Services.AddAutoMapper();
+            builder.Services.AddScoped<IIncomingMessageMapper, IncomingMessageMapper>();
+            builder.Services.AddScoped<IIncomingAttachmentMapper, IncomingAttachmentMapper>();
+            builder.Services.AddScoped<IOutgoingMessageMapper, OutgoingMessageMapper>();
 
             return builder;
         }

@@ -28,7 +28,7 @@ namespace Artice.WebApp
 				);
 		}
 
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app)
 		{
 			app.UseArtice("/Artice");
 

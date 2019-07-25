@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Artice.Core.Models;
 using Artice.Core.Models.Enum;
 using Artice.Core.OutgoingMessages;
+using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
 using Artice.Telegram.Models.Enums;
 using Artice.Telegram.Models.ReplyMarkups;
-using AutoMapper;
 using Message = Artice.Telegram.Models.Message;
 
 namespace Artice.Telegram
@@ -17,7 +17,7 @@ namespace Artice.Telegram
 	{
 
 
-		private readonly IMapper _mapper;
+		private readonly IOutgoingMessageMapper _mapper;
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 
 
@@ -27,7 +27,7 @@ namespace Artice.Telegram
 		public string MessengerId => Consts.TelegramId;
 
 		public TelegramOutgoingMessageProvider(
-			IMapper mapper,
+			IOutgoingMessageMapper mapper,
 			Func<ITelegramHttpClient> clientConstructor)
 
         {
@@ -41,7 +41,7 @@ namespace Artice.Telegram
 			var sendResult =
 				await
 					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id,   message.Text,
-						replyMarkup: _mapper.Map<InlineKeyboardMarkup>(message.InlineKeyboard),
+						replyMarkup: _mapper.Map(message.InlineKeyboard),
 						parseMode: ParseMode.Markdown,
 						cancellationToken: cancellationToken);
 			//return sendResult.Ok || sendResult.Code != 429;

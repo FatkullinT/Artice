@@ -16,31 +16,5 @@ namespace Artice.Telegram.Models.ReplyMarkups
         /// </summary>
         [JsonProperty("inline_keyboard", Required = Required.Always)]
         public InlineKeyboardButton[][] InlineKeyboard { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InlineKeyboardMarkup"/> class.
-        /// </summary>
-        public InlineKeyboardMarkup() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InlineKeyboardMarkup"/> class.
-        /// </summary>
-        /// <param name="inlineKeyboardRow">The inline keyboard row.</param>
-        public InlineKeyboardMarkup(InlineKeyboardButton[] inlineKeyboardRow)
-        {
-            InlineKeyboard = new[]
-            {
-                inlineKeyboardRow
-            };
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="InlineKeyboardMarkup"/> class.
-        /// </summary>
-        /// <param name="inlineKeyboard">The inline keyboard.</param>
-        public InlineKeyboardMarkup(InlineKeyboardButton[][] inlineKeyboard)
-        {
-            InlineKeyboard = inlineKeyboard;
-        }
     }
 }
