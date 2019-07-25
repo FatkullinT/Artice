@@ -67,7 +67,8 @@ namespace Artice
 				{
 					foreach (var responseTask in responses)
 					{
-						provider.SendMessageAsync(await responseTask);
+						var message = await responseTask;
+						provider.SendMessageAsync(message);
 					}
 				}
 			}

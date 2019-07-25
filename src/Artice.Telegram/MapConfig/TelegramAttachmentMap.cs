@@ -5,11 +5,24 @@ using Artice.Core.Models;
 using Artice.Telegram.Models.Enums;
 using AutoMapper;
 using Message = Artice.Telegram.Models.Message;
+using System;
+using Artice.Telegram.Files;
 
 namespace Artice.Telegram.MapConfig
 {
     public class TelegramAttachmentMap : ITypeConverter<Models.Message, Attachment[]>
     {
+        private readonly Func<ITelegramHttpClient> _clientConstructor;
+
+        public TelegramAttachmentMap(Func<ITelegramHttpClient> clientConstructor)
+        {
+            _clientConstructor = clientConstructor;
+        }
+
+        public TelegramAttachmentMap()
+        {
+        }
+
         public Attachment[] Convert(Message source, Attachment[] destination, ResolutionContext context)
         {
             var result = new List<Attachment>();
@@ -19,7 +32,7 @@ namespace Artice.Telegram.MapConfig
                 {
                     result.Add(new Audio()
                     {
-                        File = new FileReference(source.Voice.FileId)
+                        File = CreateTelegramFile(source.Voice.FileId, source.Voice.MimeType)
                     });
                     break;
                 }
@@ -27,7 +40,7 @@ namespace Artice.Telegram.MapConfig
                 {
                     result.Add(new Audio()
                     {
-                        File = new FileReference(source.Audio.FileId)
+                        File = CreateTelegramFile(source.Audio.FileId, source.Audio.MimeType)
                     });
                     break;
                 }
@@ -35,7 +48,7 @@ namespace Artice.Telegram.MapConfig
                 {
                     result.Add(new Video()
                     {
-                        File = new FileReference(source.Video.FileId)
+                        File = CreateTelegramFile(source.Video.FileId, source.Video.MimeType)
                     });
                     break;
                 }
@@ -47,7 +60,7 @@ namespace Artice.Telegram.MapConfig
                     {
                         result.Add(new Image()
                         {
-                            File = new FileReference(maxSizePhoto.FileId)
+                            File = CreateTelegramFile(maxSizePhoto.FileId)
                         });
                     }
                     break;
@@ -56,7 +69,7 @@ namespace Artice.Telegram.MapConfig
                 {
                     result.Add(new Document()
                     {
-                        File = new FileReference(source.Document.FileId) { FileName = source.Document.FileName },
+                        File = CreateTelegramFile(source.Document.FileId, source.Document.MimeType, source.Document.FileName),
                         Extention = Path.GetExtension(source.Document.FileName)
                     });
                     break;
@@ -66,12 +79,22 @@ namespace Artice.Telegram.MapConfig
                     result.Add(new Sticker()
                     {
                         StickerId = source.Sticker.Emoji,
-                        File = new FileReference(source.Sticker.FileId)
+                        File = CreateTelegramFile(source.Sticker.FileId)
                     });
                     break;
                 }
             }
             return result.ToArray();
+        }
+
+        private IFile CreateTelegramFile(string fileId, string mimeType = null, string fileName = null)
+        {
+            return new TelegramFile(_clientConstructor)
+            {
+                FileId = fileId,
+                MimeType = mimeType,
+                Name = fileName
+            };
         }
     }
 }

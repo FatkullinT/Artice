@@ -23,9 +23,8 @@ namespace Artice.WebApp
 		{
 			services.AddArtice<Logic>(builder => builder
 					.UseTelegramProvider(
-					configuration => configuration
-						.SetAccessToken(Configuration["Telegram:AccessToken"])
-					)
+						configuration => configuration.SetAccessToken(Configuration["Telegram:AccessToken"])
+						)
 				);
 		}
 

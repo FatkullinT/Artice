@@ -18,126 +18,40 @@ namespace Artice.Telegram
 
 
 		private readonly IMapper _mapper;
+        private readonly Func<ITelegramHttpClient> _clientConstructor;
 
-		private readonly ITelegramHttpClient _client;
 
-		private readonly TelegramProviderConfiguration _configuration;
-
-		protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
+        protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
 
 
 		public string MessengerId => Consts.TelegramId;
 
 		public TelegramOutgoingMessageProvider(
 			IMapper mapper,
-			ITelegramHttpClient client,
-			TelegramProviderConfiguration configuration)
-			
-		{
-			_mapper = mapper;
-			_client = client;
-			_configuration = configuration;
-		}
+			Func<ITelegramHttpClient> clientConstructor)
+
+        {
+            _mapper = mapper;
+            _clientConstructor = clientConstructor;
+        }
 
 		public async Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken())
 		{
 
 			var sendResult =
 				await
-					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id, message.Text,
+					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id,   message.Text,
 						replyMarkup: _mapper.Map<InlineKeyboardMarkup>(message.InlineKeyboard),
+						parseMode: ParseMode.Markdown,
 						cancellationToken: cancellationToken);
 			//return sendResult.Ok || sendResult.Code != 429;
 		}
-
-
-		public async Task GetFileContentAsync(FileReference file, CancellationToken cancellationToken)
-		{
-			if (file.ReferenceType == FileReferenceType.Id)
-			{
-				var parameters = new Dictionary<string, object>
-				{
-					{"file_id", file.Id}
-				};
-				Models.File fileInfo;
-					var result =
-						await
-							_client.GetAsync<Models.File>(GetMethodPath("getFile"), parameters, cancellationToken);
-					fileInfo = result.ResultObject;
-					
-				file.Url = new Uri(string.Concat(Consts.BaseUrl, Consts.FilePath, "/", _configuration.AccessToken, "/", fileInfo.FilePath));
-			}
-			if (file.ReferenceType == FileReferenceType.Url)
-			{
-				var downloadedFile = await _client.DownloadFile(file.Url, cancellationToken);
-				file.MimeType = downloadedFile.MimeType;
-				file.Content = downloadedFile.Content;
-			}
-		}
-
-		//private Task SetWebhookAsync(string url = "",
-		//	CancellationToken cancellationToken = default(CancellationToken))
-		//{
-		//	var parameters = new Dictionary<string, object>
-		//	{
-		//		{"url", url}
-		//	};
-
-		//	using (var client = new WebApiClient(BaseUrl, _messageHandler))
-		//	{
-		//		return client.PostAsync<bool>("setWebhook", parameters, cancellationToken);
-		//	}
-		//}
-
-		//private async Task<WebhookInfo> GetWebhookInfoAsync(CancellationToken cancellationToken = new CancellationToken())
-		//{
-		//	using (var client = new WebApiClient(BaseUrl, _messageHandler))
-		//	{
-		//		var result = await client.GetAsync<WebhookInfo>("getWebhookInfo", null, cancellationToken);
-		//		return result.ResultObject;
-		//	}
-		//}
-
-		//private async Task GetUpdatesAsync(int offset = 0, int limit = 100, int timeout = 0,
-		//	CancellationToken cancellationToken = default(CancellationToken))
-		//{
-		//	var parameters = new Dictionary<string, object>
-		//	{
-		//		{"offset", offset},
-		//		{"limit", limit},
-		//		{"timeout", timeout}
-		//	};
-		//	using (var client = new WebApiClient(BaseUrl, _messageHandler))
-		//	{
-		//		var updatesResult = await client.GetAsync<Update[]>("getUpdates", parameters, cancellationToken);
-		//		if (updatesResult.ResultObject != null && updatesResult.ResultObject.Any())
-		//		{
-		//			OnUpdatesReceived(updatesResult.ResultObject);
-		//		}
-		//	}
-		//}
-
-		//internal void OnUpdatesReceived(Update[] updates)
-		//{
-		//	var messages = updates.Select(GetMessage).Where(m => m != null).ToArray();
-		//	if (messages.Any())
-		//	{
-		//		Update?.Invoke(this, new UpdateEventArgs(messages, this));
-		//	}
-		//	foreach (var update in updates.Where(u => u.Type == UpdateType.CallbackQueryUpdate))
-		//	{
-		//		AnswerCallbackQueryAsync(update.CallbackQuery.Id);
-		//	}
-		//}
-
-		
-
 
 		private Task<ApiResponse<Message>> SendTextMessageAsync(string chatId, string text, bool disableWebPagePreview = false,
 			bool disableNotification = false,
 			int replyToMessageId = 0,
 			IReplyMarkup replyMarkup = null,
-			ParseMode parseMode = ParseMode.Markdown,
+			ParseMode parseMode = ParseMode.Default,
 			CancellationToken cancellationToken = default)
 		{
 			var additionalParameters = new Dictionary<string, object>();
@@ -179,7 +93,7 @@ namespace Artice.Telegram
 			if (!string.IsNullOrEmpty(typeInfo.Value))
 				additionalParameters.Add(typeInfo.Value, content);
 
-			return _client.PostAsync<Message>(GetMethodPath(typeInfo.Key), additionalParameters, cancellationToken);
+			return _clientConstructor().PostAsync<Message>(typeInfo.Key, additionalParameters, cancellationToken);
 			
 		}
 
@@ -204,13 +118,8 @@ namespace Artice.Telegram
 			if (cacheTime != 0)
 				parameters.Add("cache_time", cacheTime);
 
-			return _client.PostAsync<bool>(GetMethodPath("answerCallbackQuery"), parameters, cancellationToken);
+			return _clientConstructor().PostAsync<bool>("answerCallbackQuery", parameters, cancellationToken);
 			
-		}
-
-		private string GetMethodPath(string methodName)
-		{
-			return string.Concat(Consts.ApiPath, _configuration.AccessToken, "/", methodName);
 		}
 	}
 }
