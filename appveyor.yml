@@ -1,13 +1,14 @@
 environment:
   ProductVersion: 0.9
 
+  CODECOV_TOKEN:
+    secure: tfuWf0tytpb8+HItUm0jhB/sXOx0K3GJMHLbn3+FKV1EfnCncRE6iAHz0Ytlt9nC
+
 branches:
   only:
   - master
-  - dev
-  
-CODECOV_TOKEN:
-    secure: tfuWf0tytpb8+HItUm0jhB/sXOx0K3GJMHLbn3+FKV1EfnCncRE6iAHz0Ytlt9nC
+  - dev 
+
 
 init:
   - ps: >-
