@@ -1,63 +1,65 @@
-﻿using Artice.Telegram.MapConfig;
+﻿
+using Artice.Core.Models;
+using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
+using Artice.Telegram.Models.Enums;
+using Artice.Telegram.Tests.Mocks;
+using Artice.Testing.Core;
 using AutoFixture;
-using AutoMapper;
 using Xunit;
+using Message = Artice.Telegram.Models.Message;
 
 namespace Artice.Telegram.Tests
 {
     public class TelegramUpdateHandlerTests
-	{
-		[Fact]
-		public void Convert_TextMessage_IncomingMessageWithText()
-		{
-			//arrange
-			var fixture = new Fixture();
-			IMapper mapper = new Mapper(new MapperConfiguration(expression => expression.AddProfile(new TelegramMapProfile())));
-			var handler = new TelegramUpdateHandler(mapper);
-			var update = new Update()
-			{
-				Message = fixture.Build<Message>()
-					.Without(m => m.ReplyToMessage)
-					.Without(m => m.PinnedMessage)
-					.Create()
-			};
-
-			//act
-			var message = handler.Handle(update);
-
-			//assert
-			Assert.Equal(Consts.TelegramId, message.MessengerId);
-			Assert.Equal(update.Message.Text, message.Text);
-			Assert.Equal(update.Message.From.Id, int.Parse(message.From.Id));
-			Assert.Equal(update.Message.Chat.Id, int.Parse(message.Chat.Id));
-			Assert.Equal(update.Message.Time, message.Time);
-		}
-
-		[Fact]
-		public void Convert_Callback_IncomingMessageWithCommand()
-		{
-			//arrange
-			var fixture = new Fixture();
-			IMapper mapper = new Mapper(new MapperConfiguration(expression =>
+    {
+        [Fact]
+        public void Convert_TextMessage_IncomingMessageWithText()
+        {
+            //arrange
+            var fixture = new Fixture();
+            var update = new Update()
             {
-                expression.AddProfile(new TelegramMapProfile());
-            }));
-			var handler = new TelegramUpdateHandler(mapper);
-			var update = new Update()
-			{
-				CallbackQuery = fixture.Build<CallbackQuery>()
-					.Without(query => query.Message)
-					.Create()
-			};
+                Message = fixture.Build<Message>()
+                    .Without(m => m.ReplyToMessage)
+                    .Without(m => m.PinnedMessage)
+                    .Create()
+            };
+            var expectedMessage = fixture.Build<IncomingMessage>().Without(m => m.Attachments).Create();
+            var mapper = new IncomingMessageMapperMock().Returns(expectedMessage);
+            var handler = new TelegramUpdateHandler(mapper.Object);
 
-			//act
-			var message = handler.Handle(update);
+            //act
+            var message = handler.Handle(update);
 
-			//assert
-			Assert.Equal(Consts.TelegramId, message.MessengerId);
-			Assert.Equal(update.CallbackQuery.CallbackData, message.CallbackData);
-			Assert.Equal(update.CallbackQuery.From.Id, int.Parse(message.From.Id));
-		}
-	}
+            //assert
+            Assert.Same(expectedMessage, message);
+            mapper.VerifyMessageOnMap(m => ReferenceEquals(update.Message, m));
+            mapper.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public void Convert_Callback_IncomingMessageWithCommand()
+        {
+            //arrange
+            var fixture = new Fixture();
+            var expectedMessage = fixture.Build<IncomingMessage>().Without(m => m.Attachments).Create();
+            var mapper = new IncomingMessageMapperMock().Returns(expectedMessage);
+            var handler = new TelegramUpdateHandler(mapper.Object);
+            var update = new Update()
+            {
+                CallbackQuery = fixture.Build<CallbackQuery>()
+                    .Without(query => query.Message)
+                    .Create()
+            };
+
+            //act
+            var message = handler.Handle(update);
+
+            //assert
+            Assert.Same(expectedMessage, message);
+            mapper.VerifyCallbackQueryOnMap(cq => ReferenceEquals(update.CallbackQuery, cq));
+
+        }
+    }
 }

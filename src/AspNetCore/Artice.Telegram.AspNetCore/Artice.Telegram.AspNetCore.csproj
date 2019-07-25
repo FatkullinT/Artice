@@ -12,7 +12,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Artice.Core.AspNetCore\Artice.Core.AspNetCore.csproj" />
     <ProjectReference Include="..\..\Artice.Telegram\Artice.Telegram.csproj" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

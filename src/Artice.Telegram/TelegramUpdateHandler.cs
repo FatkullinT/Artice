@@ -1,16 +1,16 @@
 ﻿using Artice.Core.IncomingMessages;
 using Artice.Core.Models;
+using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
 using Artice.Telegram.Models.Enums;
-using AutoMapper;
 
 namespace Artice.Telegram
 {
 	public class TelegramUpdateHandler : IIncomingUpdateHandler<Update>
 	{
-		private readonly IMapper _mapper;
+		private readonly IIncomingMessageMapper _mapper;
 
-		public TelegramUpdateHandler(IMapper mapper)
+		public TelegramUpdateHandler(IIncomingMessageMapper mapper)
 		{
 			_mapper = mapper;
 		}
@@ -21,12 +21,12 @@ namespace Artice.Telegram
 			{
 				case UpdateType.MessageUpdate:
 					{
-						return _mapper.Map(update.Message, new IncomingMessage { MessengerId = Consts.TelegramId });
+						return _mapper.Map(update.Message);
 					}
 				case UpdateType.CallbackQueryUpdate:
 					{
 						//todo: Add response sending about callback receiving
-						return _mapper.Map(update.CallbackQuery, new IncomingMessage { MessengerId = Consts.TelegramId });
+						return _mapper.Map(update.CallbackQuery);
 					}
 				default:
 					{
