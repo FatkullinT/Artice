@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Artice.Core.Exceptions;
 using Artice.Telegram.Models;
 using Newtonsoft.Json;
 
@@ -43,7 +46,14 @@ namespace Artice.Telegram
                 ? GetMethodPath(method)
                 : string.Concat(GetMethodPath(method), "?", string.Join("&", parameters.Select(kvp => $"{kvp.Key}={kvp.Value}")));
             var response = await _httpClient.GetAsync(uri, cancellationToken);
-            return JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
+
+            await ThrowIfNotSuccess(response);
+
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
+
+            ThrowIfNotSuccess(apiResponse);
+
+            return apiResponse;
         }
 
         public async Task<ApiResponse<T>> PostAsync<T>(string method, Dictionary<string, object> parameters,
@@ -52,16 +62,27 @@ namespace Artice.Telegram
             var payload = JsonConvert.SerializeObject(parameters);
             var httpContent = new StringContent(payload, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await _httpClient.PostAsync(GetMethodPath(method), httpContent, cancellationToken);
-            return JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
+
+            await ThrowIfNotSuccess(response);
+
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
+
+            ThrowIfNotSuccess(apiResponse);
+
+            return apiResponse;
         }
 
-        public Task<HttpResponseMessage> GetFileResponseAsync(string fileInnerPath,
+        public async Task<HttpResponseMessage> GetFileResponseAsync(string fileInnerPath,
             CancellationToken cancellationToken = default)
         {
-            return _httpClient.GetAsync(
+            var response = await _httpClient.GetAsync(
                 GetFileOuterPath(fileInnerPath),
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken);
+
+            await ThrowIfNotSuccess(response);
+
+            return response;
         }
 
         private string GetFileOuterPath(string fileInnerPath)
@@ -72,6 +93,41 @@ namespace Artice.Telegram
         private string GetMethodPath(string methodName)
         {
             return string.Concat(Consts.ApiPath, _configuration.AccessToken, "/", methodName);
+        }
+
+        private async Task ThrowIfNotSuccess(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+                return;
+
+            var requestUrl = response.RequestMessage.RequestUri.ToString();
+            var requestMethod = response.RequestMessage.Method.ToString();
+            var innerMessage = await response.Content.ReadAsStringAsync();
+
+            var messageBuilder = new StringBuilder("The request ended with an error.");
+            messageBuilder.AppendLine($" Request: {requestMethod} {requestUrl}");
+
+            if (innerMessage.Length > 0 && innerMessage.Length < 512)
+                messageBuilder.AppendLine($" ErrorDetails: {innerMessage}");
+
+            throw new ApiRequestException(messageBuilder.ToString())
+            {
+                BotApiIdentifier = Consts.TelegramId,
+                StatusCode = response.StatusCode
+            };
+        }
+
+        private void ThrowIfNotSuccess<T>(ApiResponse<T> response)
+        {
+            if (response.Ok)
+                return;
+
+            throw new ApiRequestException($"Api returned error.\n\r  ErrorDetails: {response.Message}")
+            {
+                BotApiIdentifier = Consts.TelegramId,
+                StatusCode = HttpStatusCode.OK,
+                ErrorCode = response.Code.ToString(CultureInfo.InvariantCulture)
+            };
         }
     }
 }

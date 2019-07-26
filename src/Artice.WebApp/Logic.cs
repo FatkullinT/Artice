@@ -91,11 +91,11 @@ namespace Artice.WebApp
 
         string ReflectMarkdown(string message)
         {
-            return message
-                .Replace("_", "\\_")
-                .Replace("*", "\\*")
-                .Replace("[", "\\[")
-                .Replace("'", "\\'");
+            return message;
+            //.Replace("_", "\\_")
+            //.Replace("*", "\\*")
+            //.Replace("[", "\\[")
+            //.Replace("'", "\\'");
         }
     }
 }
