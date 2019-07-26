@@ -20,7 +20,7 @@ namespace Artice.Context
 		}
 
 		/// <summary>
-		/// Chat or user which is communicating.
+		/// Group or user which is communicating.
 		/// </summary>
 		public Recipient Recipient { get; }
 

@@ -3,6 +3,6 @@
     public enum RecipientType
     {
         User,
-        Chat
+        Group
     }
 }

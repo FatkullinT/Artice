@@ -11,9 +11,9 @@ namespace Artice.Extensions
             var message = new OutgoingMessage() { Text = text };
             switch (recipient.RecipientType)
             {
-                case RecipientType.Chat:
+                case RecipientType.Group:
                     {
-                        message.Chat = new Chat() { Id = recipient.RecipientId };
+                        message.Group = new Group() { Id = recipient.RecipientId };
                         break;
                     }
                 case RecipientType.User:

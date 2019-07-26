@@ -39,7 +39,7 @@ namespace Artice.Telegram
 
             var sendResult =
                 await
-                    SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id, message.Text,
+                    SendTextMessageAsync(message.Group != null ? message.Group.Id : message.To.Id, message.Text,
                         replyMarkup: _mapper.Map(message.InlineKeyboard),
                         parseMode: ParseMode.Markdown,
                         cancellationToken: cancellationToken);

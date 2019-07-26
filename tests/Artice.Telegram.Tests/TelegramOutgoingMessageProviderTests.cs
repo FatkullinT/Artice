@@ -32,7 +32,7 @@ namespace Artice.Telegram.Tests
             //assert
             mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
             clientMock.VerifyPost<Telegram.Models.Message>("sendMessage",
-                parameters => (string) parameters["chat_id"] == message.Chat.Id
+                parameters => (string) parameters["chat_id"] == message.Group.Id
                               && (string) parameters["text"] == message.Text
                               && ReferenceEquals(parameters["reply_markup"], telegramKeyboardMarkup));
             mapper.VerifyNoOtherCalls();

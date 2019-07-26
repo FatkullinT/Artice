@@ -1,6 +1,6 @@
 ﻿namespace Artice.Core.Models
 {
-    public class Chat
+    public class Group
     {
         public string Id { get; set; }
     }

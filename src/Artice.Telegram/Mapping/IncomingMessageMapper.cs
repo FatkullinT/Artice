@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Artice.Core.Models;
+using Artice.Telegram.Models.Enums;
 
 namespace Artice.Telegram.Mapping
 {
@@ -21,7 +22,7 @@ namespace Artice.Telegram.Mapping
                 Text = message.Text,
                 Time = message.Time,
                 Id = MapId(message.Id),
-                Chat = Map(message.Chat),
+                Group = MapGroup(message.Chat),
                 From = Map(message.From),
                 MessengerId = Consts.TelegramId,
                 Attachments = _incomingAttachmentMapper.Map(message).ToArray()
@@ -33,7 +34,7 @@ namespace Artice.Telegram.Mapping
             return new IncomingMessage()
             {
                 Id = callbackQuery.Id,
-                Chat = callbackQuery.Message != null ? Map(callbackQuery.Message.Chat) : null,
+                Group = callbackQuery.Message != null ? MapGroup(callbackQuery.Message.Chat) : null,
                 From = Map(callbackQuery.From),
                 MessengerId = Consts.TelegramId,
                 CallbackData = callbackQuery.CallbackData,
@@ -41,12 +42,12 @@ namespace Artice.Telegram.Mapping
             };
         }
 
-        private Chat Map(Telegram.Models.Chat src)
+        private Group MapGroup(Telegram.Models.Chat src)
         {
-            if (src == null)
+            if (src == null || src.Type == ChatType.Private)
                 return null;
 
-            return new Chat()
+            return new Group()
             {
                 Id = MapId(src.Id)
             };

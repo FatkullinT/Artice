@@ -58,8 +58,8 @@ namespace Artice
 			//todo: Добавить проверку на отсутсвие бота
 			try
 			{
-				var recipient = incomingMessage.Chat != null
-					? new Recipient(incomingMessage.MessengerId, incomingMessage.Chat.Id, RecipientType.Chat)
+				var recipient = incomingMessage.Group != null
+					? new Recipient(incomingMessage.MessengerId, incomingMessage.Group.Id, RecipientType.Group)
 					: new Recipient(incomingMessage.MessengerId, incomingMessage.From.Id, RecipientType.User);
 				var context = _contextStorage.Get(recipient);
 				var responses = _logic.Answer(provider, incomingMessage, context);

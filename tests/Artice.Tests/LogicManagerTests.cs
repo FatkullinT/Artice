@@ -38,7 +38,7 @@ namespace Artice.Tests
 				.Build<IncomingMessage>()
 				.With(message => message.MessengerId, messengerId)
 				.With(message => message.From, user)
-				.Without(message => message.Chat)
+				.Without(message => message.Group)
 				.Without(message => message.Attachments)
 				.Create();
 
@@ -58,11 +58,11 @@ namespace Artice.Tests
 			//arrange
 			var fixture = new Fixture();
 
-			var chat = fixture.Create<Chat>();
+			var chat = fixture.Create<Group>();
 			var messengerId = fixture.Create<string>();
 
 			var recipient = fixture.Build<Recipient>()
-				.With(r => r.RecipientType, RecipientType.Chat)
+				.With(r => r.RecipientType, RecipientType.Group)
 				.With(r => r.RecipientId, chat.Id)
 				.With(r => r.BotName, messengerId)
 				.Create();
@@ -78,7 +78,7 @@ namespace Artice.Tests
 			var incomingMessage = fixture
 				.Build<IncomingMessage>()
 				.With(message => message.MessengerId, messengerId)
-				.With(message => message.Chat, chat)
+				.With(message => message.Group, chat)
 				.Without(message => message.Attachments)
 				.Create();
 

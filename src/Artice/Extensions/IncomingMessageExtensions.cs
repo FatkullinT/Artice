@@ -8,7 +8,7 @@ namespace Artice.Extensions
         {
             return new OutgoingMessage()
             {
-                Chat = incomingMessage.Chat,
+                Group = incomingMessage.Group,
                 To = incomingMessage.From,
                 Text = responseText
             };
