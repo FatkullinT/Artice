@@ -9,5 +9,11 @@
 			Configuration.AccessToken = accessToken;
 			return this;
 		}
-	}
+
+        public ITelegramProviderConfigurator UseUpdatesReceivingMethod(UpdatesReceivingMethod method)
+        {
+            Configuration.UpdatesReceivingMethod = method;
+            return this;
+        }
+    }
 }

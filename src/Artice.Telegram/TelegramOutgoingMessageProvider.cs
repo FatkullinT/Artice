@@ -36,9 +36,7 @@ namespace Artice.Telegram
 
         public async Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken())
         {
-
-            var sendResult =
-                await
+            await
                     SendTextMessageAsync(message.Group != null ? message.Group.Id : message.To.Id, message.Text,
                         replyMarkup: _mapper.Map(message.InlineKeyboard),
                         parseMode: ParseMode.Markdown,

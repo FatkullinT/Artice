@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Artice.Core.AspNetCore
 {
-	public interface IRequestHandler
+	public interface IWebhookRequestHandler
 	{
 		Task<bool> CheckRequest(HttpRequest request);
 

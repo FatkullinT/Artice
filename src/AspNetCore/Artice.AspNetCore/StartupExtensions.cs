@@ -3,6 +3,7 @@ using Artice.Context;
 using Artice.Core.AspNetCore;
 using Artice.Core.IncomingMessages;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Artice.AspNetCore
 {
@@ -10,12 +11,13 @@ namespace Artice.AspNetCore
 	{
 		public static IServiceCollection AddArtice<TLogicModule>(this IServiceCollection services, Action<IArticeBuilder> buildAction = null)
 			where TLogicModule : class, ILogic
-		{
-			return services
-				.AddArtice(buildAction)
-				.AddScoped<ILogic, TLogicModule>()
-				.AddScoped<IIncomingMessageHandler, LogicManager>()
-				.AddSingleton<IContextStorage, ContextStorage>(); 
-		}
+        {
+            return services
+                .AddArtice(buildAction)
+                .AddScoped<ILogic, TLogicModule>()
+                .AddScoped<IIncomingMessageHandler, LogicManager>()
+                .AddSingleton<IContextStorage, ContextStorage>()
+                .AddSingleton<IHostedService, LongPollingService>();
+        }
 	}
 }

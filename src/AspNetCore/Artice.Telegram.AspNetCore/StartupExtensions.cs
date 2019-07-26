@@ -16,8 +16,22 @@ namespace Artice.Telegram.AspNetCore
 
             builder.Services.AddSingleton(configurator.Configuration);
             builder.UseProvider<TelegramOutgoingMessageProvider>();
+
+            switch (configurator.Configuration.UpdatesReceivingMethod)
+            {
+                case UpdatesReceivingMethod.Webhook:
+                    builder.Services.AddScoped<TelegramWebhookRequestHandler>();
+                    break;
+                case UpdatesReceivingMethod.LongPolling:
+                    builder.Services.AddSingleton<ILongPollingProcessor, LongPollingProcessor<Update>>();
+                    builder.Services.AddSingleton<IInterrogator<Update>, TelegramInterrogator>();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(configurator.Configuration.UpdatesReceivingMethod));
+            }
+
             builder.Services.AddScoped<IIncomingUpdateHandler<Update>, TelegramUpdateHandler>();
-            builder.Services.AddScoped<TelegramRequestHandler>();
+            
             var httpClientBuilder = builder.Services.AddHttpClient<ITelegramHttpClient, TelegramHttpClient>(client =>
             {
                 TelegramHttpClient.ConfigureClient(client);

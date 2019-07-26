@@ -26,10 +26,10 @@ namespace Artice.Core.AspNetCore
 			_rootServiceProvider = rootServiceProvider;
 
 			_handlerTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes())
-				.Where(type => typeof(IRequestHandler).IsAssignableFrom(type))
+				.Where(type => typeof(IWebhookRequestHandler).IsAssignableFrom(type))
 				.SelectMany(type =>
 					type.GetCustomAttributes<HandlerRouteAttribute>()
-						.Select(attr => new { Type = type, Route = attr.Route }))
+						.Select(attr => new { Type = type, attr.Route }))
 				.ToDictionary(pare => $"{basePath}/{pare.Route.Trim('/')}".ToUpperInvariant(), pare => pare.Type);
 		}
 
@@ -40,7 +40,7 @@ namespace Artice.Core.AspNetCore
 			{
 				using (var scope = _rootServiceProvider.CreateScope())
 				{
-					var updateHandler = (IRequestHandler)scope.ServiceProvider.GetService(type);
+					var updateHandler = (IWebhookRequestHandler)scope.ServiceProvider.GetService(type);
 					if (updateHandler != null && await updateHandler.CheckRequest(context.Request))
 					{
 						var incomingMessage = await updateHandler.HandleAsync(context);

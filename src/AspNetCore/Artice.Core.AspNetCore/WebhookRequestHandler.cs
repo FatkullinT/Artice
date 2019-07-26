@@ -9,11 +9,11 @@ using Newtonsoft.Json;
 
 namespace Artice.Core.AspNetCore
 {
-	public abstract class RequestHandler<TUpdate> : IRequestHandler
+	public abstract class WebhookRequestHandler<TUpdate> : IWebhookRequestHandler
 	{
 		private readonly IIncomingUpdateHandler<TUpdate> _updateHandler;
 
-		protected RequestHandler(IIncomingUpdateHandler<TUpdate> updateHandler)
+		protected WebhookRequestHandler(IIncomingUpdateHandler<TUpdate> updateHandler)
 		{
 			_updateHandler = updateHandler;
 		}

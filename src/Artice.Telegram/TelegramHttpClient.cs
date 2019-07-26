@@ -21,6 +21,9 @@ namespace Artice.Telegram
         {
             _httpClient = httpClient;
             _configuration = configuration;
+
+            if (configuration.UpdatesReceivingMethod == UpdatesReceivingMethod.LongPolling)
+                _httpClient.Timeout = TimeSpan.FromSeconds(Consts.LongPoolingTimeout * 2);
         }
 
         public static HttpClient ConfigureClient(HttpClient client)
@@ -31,6 +34,7 @@ namespace Artice.Telegram
             client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip,deflate");
             return client;
         }
+
 
         public async Task<ApiResponse<T>> GetAsync<T>(string method, Dictionary<string, object> parameters = null,
             CancellationToken cancellationToken = default)

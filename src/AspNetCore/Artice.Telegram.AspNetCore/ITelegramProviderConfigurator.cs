@@ -3,5 +3,7 @@
 	public interface ITelegramProviderConfigurator
 	{
 		ITelegramProviderConfigurator SetAccessToken(string accessToken);
-	}
+
+        ITelegramProviderConfigurator UseUpdatesReceivingMethod(UpdatesReceivingMethod method);
+    }
 }
