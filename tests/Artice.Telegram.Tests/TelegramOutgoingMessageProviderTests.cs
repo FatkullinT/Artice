@@ -1,8 +1,6 @@
 ﻿using Artice.Core.Models;
-using Artice.Telegram.Mapping;
 using Artice.Telegram.Models.ReplyMarkups;
 using Artice.Telegram.Tests.Mocks;
-using Artice.Testing.Core;
 using AutoFixture;
 using Xunit;
 

@@ -1,15 +1,11 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
 using Artice.Core.Models;
-using Artice.Telegram.Files;
 using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
 using Artice.Telegram.Tests.Mocks;
 using AutoFixture;
-using AutoFixture.Kernel;
 using Xunit;
-using Audio = Artice.Core.Models.Audio;
 using Chat = Artice.Telegram.Models.Chat;
 using User = Artice.Telegram.Models.User;
 
@@ -92,7 +88,11 @@ namespace Artice.Telegram.Tests
                 Id = fixture.Create<string>(),
                 From = fixture.Create<User>(),
                 CallbackData = fixture.Create<string>(),
-                ChatInstance = fixture.Create<string>()
+                ChatInstance = fixture.Create<string>(),
+                Message = new Telegram.Models.Message()
+                {
+                    Chat = fixture.Create<Chat>()
+                }
             };
             var attachmentMapper = new IncomingAttachmentMapperMock();
             var mapper = new IncomingMessageMapper(attachmentMapper.Object);
@@ -105,7 +105,7 @@ namespace Artice.Telegram.Tests
             Assert.Empty(incomingMessage.Attachments);
             Assert.Equal(callbackQuery.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.Id);
             Assert.Equal(default, incomingMessage.Time);
-            Assert.Equal(callbackQuery.ChatInstance, incomingMessage.Chat.Id);
+            Assert.Equal(callbackQuery.Message.Chat.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.Chat.Id);
             Assert.Equal(callbackQuery.From.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.From.Id);
             Assert.Null(incomingMessage.Text);
             Assert.Equal(Consts.TelegramId, incomingMessage.MessengerId);

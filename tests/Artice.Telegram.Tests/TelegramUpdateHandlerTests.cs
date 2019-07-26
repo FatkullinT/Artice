@@ -1,10 +1,7 @@
 ﻿
 using Artice.Core.Models;
-using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
-using Artice.Telegram.Models.Enums;
 using Artice.Telegram.Tests.Mocks;
-using Artice.Testing.Core;
 using AutoFixture;
 using Xunit;
 using Message = Artice.Telegram.Models.Message;

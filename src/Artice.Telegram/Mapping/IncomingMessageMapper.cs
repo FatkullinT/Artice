@@ -33,7 +33,7 @@ namespace Artice.Telegram.Mapping
             return new IncomingMessage()
             {
                 Id = callbackQuery.Id,
-                Chat = new Core.Models.Chat { Id = callbackQuery.ChatInstance },
+                Chat = callbackQuery.Message != null ? Map(callbackQuery.Message.Chat) : null,
                 From = Map(callbackQuery.From),
                 MessengerId = Consts.TelegramId,
                 CallbackData = callbackQuery.CallbackData,
@@ -41,19 +41,25 @@ namespace Artice.Telegram.Mapping
             };
         }
 
-        private Chat Map(Telegram.Models.Chat chat)
+        private Chat Map(Telegram.Models.Chat src)
         {
+            if (src == null)
+                return null;
+
             return new Chat()
             {
-                Id = MapId(chat.Id)
+                Id = MapId(src.Id)
             };
         }
 
-        private User Map(Telegram.Models.User user)
+        private User Map(Telegram.Models.User src)
         {
+            if (src == null)
+                return null;
+
             return new User()
             {
-                Id = MapId(user.Id)
+                Id = MapId(src.Id)
             };
         }
 
