@@ -37,11 +37,11 @@ namespace Artice.Core.AspNetCore
 			}
 		}
 
-		protected virtual Task<IncomingMessage> ConvertJsonContent(string content)
+		protected virtual async Task<IncomingMessage> ConvertJsonContent(string content)
 		{
 			var updateModel = JsonConvert.DeserializeObject<TUpdate>(content);
-			var incomingMessage = _updateHandler.Handle(updateModel);
-			return Task.FromResult(incomingMessage);
+			var incomingMessage = await _updateHandler.HandleAsync(updateModel);
+			return incomingMessage;
 		}
 
 		protected virtual Task MakeResponse(HttpContext context)

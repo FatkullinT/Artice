@@ -19,10 +19,6 @@ namespace Artice.Telegram
         private readonly IOutgoingMessageMapper _mapper;
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 
-
-        protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
-
-
         public string MessengerId => Consts.TelegramId;
 
         public TelegramOutgoingMessageProvider(
@@ -91,31 +87,6 @@ namespace Artice.Telegram
                 additionalParameters.Add(typeInfo.Value, content);
 
             return _clientConstructor().PostAsync<Message>(typeInfo.Key, additionalParameters, cancellationToken);
-
-        }
-
-        private Task<ApiResponse<bool>> AnswerCallbackQueryAsync(string callbackQueryId, string text = null,
-            bool showAlert = false,
-            string url = null,
-            int cacheTime = 0,
-            CancellationToken cancellationToken = default)
-        {
-            var parameters = new Dictionary<string, object>
-            {
-                {"callback_query_id", callbackQueryId},
-                {"show_alert", showAlert},
-            };
-
-            if (!string.IsNullOrEmpty(text))
-                parameters.Add("text", text);
-
-            if (!string.IsNullOrEmpty(url))
-                parameters.Add("url", url);
-
-            if (cacheTime != 0)
-                parameters.Add("cache_time", cacheTime);
-
-            return _clientConstructor().PostAsync<bool>("answerCallbackQuery", parameters, cancellationToken);
 
         }
     }

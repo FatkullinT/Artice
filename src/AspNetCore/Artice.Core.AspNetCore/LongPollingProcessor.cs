@@ -32,7 +32,7 @@ namespace Artice.Core.AspNetCore
                     using (var scope = _rootServiceProvider.CreateScope())
                     {
                         var updateHandler = scope.ServiceProvider.GetService<IIncomingUpdateHandler<TUpdate>>();
-                        var incomingMessage = updateHandler.Handle(update);
+                        var incomingMessage = await updateHandler.HandleAsync(update, _cancellationTokenSource.Token);
 
                         var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
                         foreach (var handler in handlers)

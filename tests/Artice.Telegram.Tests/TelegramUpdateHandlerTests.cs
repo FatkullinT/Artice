@@ -11,7 +11,7 @@ namespace Artice.Telegram.Tests
     public class TelegramUpdateHandlerTests
     {
         [Fact]
-        public void Convert_TextMessage_IncomingMessageWithText()
+        public async void HandleAsync_TextMessage_IncomingMessageWithText()
         {
             //arrange
             var fixture = new Fixture();
@@ -24,25 +24,28 @@ namespace Artice.Telegram.Tests
             };
             var expectedMessage = fixture.Build<IncomingMessage>().Without(m => m.Attachments).Create();
             var mapper = new IncomingMessageMapperMock().Returns(expectedMessage);
-            var handler = new TelegramUpdateHandler(mapper.Object);
+            var client = new TelegramHttpClientMock();
+            var handler = new TelegramUpdateHandler(mapper.Object, ()=>client.Object);
 
             //act
-            var message = handler.Handle(update);
+            var message = await handler.HandleAsync(update);
 
             //assert
+            client.VerifyNoOtherCalls();
             Assert.Same(expectedMessage, message);
             mapper.VerifyMessageOnMap(m => ReferenceEquals(update.Message, m));
             mapper.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void Convert_Callback_IncomingMessageWithCommand()
+        public async void HandleAsync_Callback_IncomingMessageWithCommand()
         {
             //arrange
             var fixture = new Fixture();
             var expectedMessage = fixture.Build<IncomingMessage>().Without(m => m.Attachments).Create();
             var mapper = new IncomingMessageMapperMock().Returns(expectedMessage);
-            var handler = new TelegramUpdateHandler(mapper.Object);
+            var client = new TelegramHttpClientMock();
+            var handler = new TelegramUpdateHandler(mapper.Object, () => client.Object);
             var update = new Update()
             {
                 CallbackQuery = fixture.Build<CallbackQuery>()
@@ -51,9 +54,10 @@ namespace Artice.Telegram.Tests
             };
 
             //act
-            var message = handler.Handle(update);
+            var message = await handler.HandleAsync(update);
 
             //assert
+            client.VerifyPost<bool>("answerCallbackQuery", parameters => string.Equals((string)parameters["callback_query_id"], update.CallbackQuery.Id));
             Assert.Same(expectedMessage, message);
             mapper.VerifyCallbackQueryOnMap(cq => ReferenceEquals(update.CallbackQuery, cq));
 

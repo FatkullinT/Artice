@@ -1,9 +1,11 @@
-﻿using Artice.Core.Models;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Artice.Core.Models;
 
 namespace Artice.Core.IncomingMessages
 {
 	public interface IIncomingUpdateHandler<in TUpdate>
 	{
-		IncomingMessage Handle(TUpdate incomingUpdate);
+		Task<IncomingMessage> HandleAsync(TUpdate incomingUpdate, CancellationToken cancellationToken = default);
 	}
 }
