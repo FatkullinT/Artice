@@ -9,54 +9,54 @@ using Artice.Core.OutgoingMessages;
 
 namespace Artice
 {
-	public class LogicManager : IIncomingMessageHandler
-	{
-		private readonly IContextStorage _contextStorage;
+    public class LogicManager : IIncomingMessageHandler
+    {
+        private readonly IContextStorage _contextStorage;
 
-		private readonly ILogic _logic;
+        private readonly ILogic _logic;
 
-		//private List<SchedullerJob> _jobs;
+        //private List<SchedullerJob> _jobs;
 
-		private readonly IOutgoingMessageProviderFactory _outgoingMessageProviderFactory;
+        private readonly IOutgoingMessageProviderFactory _outgoingMessageProviderFactory;
 
-		private readonly ILogger _logger;
+        private readonly ILogger _logger;
 
-		public LogicManager(
-			ILogger logger,
-			IOutgoingMessageProviderFactory outgoingMessageProviderFactory,
-			ILogic logic, IContextStorage contextStorage)
-		{
-			_logger = logger;
-			_outgoingMessageProviderFactory = outgoingMessageProviderFactory;
-			_logic = logic;
-			_contextStorage = contextStorage;
-		}
+        public LogicManager(
+            ILogger logger,
+            IOutgoingMessageProviderFactory outgoingMessageProviderFactory,
+            ILogic logic, IContextStorage contextStorage)
+        {
+            _logger = logger;
+            _outgoingMessageProviderFactory = outgoingMessageProviderFactory;
+            _logic = logic;
+            _contextStorage = contextStorage;
+        }
 
-		//todo:Добавить регистрацию запланированных задач
-		//public async Task StartAsync(CancellationToken cancellationToken)
-		//{
-		//	_contextStorage = new ContextStorage(_serviceLocator);
+        //todo:Добавить регистрацию запланированных задач
+        //public async Task StartAsync(CancellationToken cancellationToken)
+        //{
+        //	_contextStorage = new ContextStorage(_serviceLocator);
 
-		//	_logic.Initialize(_contextStorage);
+        //	_logic.Initialize(_contextStorage);
 
 
-		//	_jobs = new List<SchedullerJob>();
+        //	_jobs = new List<SchedullerJob>();
 
-		//	if (_logic.Tasks != null)
-		//	{
-		//		foreach (var schedulerTask in _logic.Tasks)
-		//		{
-		//			var job = new SchedullerJob(schedulerTask, _contextStorage);
-		//			_jobs.Add(job);
-		//		}
-		//	}
-		//}
-		
+        //	if (_logic.Tasks != null)
+        //	{
+        //		foreach (var schedulerTask in _logic.Tasks)
+        //		{
+        //			var job = new SchedullerJob(schedulerTask, _contextStorage);
+        //			_jobs.Add(job);
+        //		}
+        //	}
+        //}
 
-		public async Task Handle(IncomingMessage incomingMessage)
-		{
-			var provider = _outgoingMessageProviderFactory.GetProvider(incomingMessage.MessengerId);
-			//todo: Добавить проверку на отсутсвие бота
+
+        public async Task Handle(IncomingMessage incomingMessage)
+        {
+            var provider = _outgoingMessageProviderFactory.GetProvider(incomingMessage.MessengerId);
+            //todo: Добавить проверку на отсутсвие бота
             try
             {
                 var recipient = incomingMessage.Group != null
@@ -76,15 +76,15 @@ namespace Artice
             catch (ArticeExecutionException ex)
             {
                 _logger.LogError(ex, $"Bot:{ex.BotApiIdentifier} Message:{ex.Message}");
-                throw;
+                //throw;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"OutgoingMessageProvider:{provider.GetType()} Message:{ex.Message}");
-                throw;
+                //throw;
             }
-            
-		}
 
-	}
+        }
+
+    }
 }

@@ -31,11 +31,11 @@ namespace Artice.Telegram
 
             var response = await _clientConstructor().GetAsync<Update[]>("getUpdates", parameters, cancellationToken);
 
-            var nextCursor = response.ResultObject.Max(update => update.Id) + 1;
+            var nextCursor = response.ResultObject.Any() ? response.ResultObject.Max(update => update.Id) + 1 : 0;
 
             return new UpdatesResponse<Update>()
             {
-                Cursor = nextCursor.ToString(CultureInfo.InvariantCulture),
+                Cursor = nextCursor > 0 ? nextCursor.ToString(CultureInfo.InvariantCulture) : null,
                 Updates = response.ResultObject
             };
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Artice.Core.Models;
+using Artice.Core.Models.Files;
 using Artice.Telegram.Files;
 using Artice.Telegram.Models.Enums;
 
@@ -72,9 +73,9 @@ namespace Artice.Telegram.Mapping
             }
         }
 
-        private IFile CreateTelegramFile(string fileId, string mimeType = null, string fileName = null)
+        private IIncomingFile CreateTelegramFile(string fileId, string mimeType = null, string fileName = null)
         {
-            return new TelegramFile(_clientConstructor)
+            return new TelegramIncomingFile(_clientConstructor)
             {
                 FileId = fileId,
                 MimeType = mimeType,

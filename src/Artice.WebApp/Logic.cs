@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Artice.Context;
 using Artice.Core.Models;
+using Artice.Core.Models.Files;
 using Artice.Core.OutgoingMessages;
 using Artice.Extensions;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -31,6 +32,56 @@ namespace Artice.WebApp
             else if (string.Equals("/inlineButtons", message.Text, StringComparison.CurrentCultureIgnoreCase))
             {
                 yield return GetInlineKeyboard(message);
+            }
+            else if (string.Equals("/testPhoto", message.Text, StringComparison.CurrentCultureIgnoreCase))
+            {
+                var attachmentMessage = message.GetResponse("test photo response");
+                attachmentMessage.Attachments = new Attachment[]
+                {
+                    new Image()
+                    {
+                        File = new OutgoingLocalFile("C:\\Temp\\file8.jpg")
+                    },
+                };
+                yield return Task.FromResult(attachmentMessage);
+            }
+            else if (string.Equals("/doublePhotoSend", message.Text, StringComparison.CurrentCultureIgnoreCase))
+            {
+                var attachmentMessage = message.GetResponse("test photo - 1");
+                attachmentMessage.Attachments = new Attachment[]
+                {
+                    new Image()
+                    {
+                        File = new OutgoingLocalFile("C:\\Temp\\file8.jpg")
+                    },
+                };
+                yield return Task.FromResult(attachmentMessage);
+                attachmentMessage.Text = "test photo - 2";
+                yield return Task.FromResult(attachmentMessage);
+            }
+
+            else if (string.Equals("/testPhotoWithKeyboard", message.Text, StringComparison.CurrentCultureIgnoreCase))
+            {
+                var attachmentMessage = message.GetResponse("test photo response");
+                attachmentMessage.InlineKeyboard = new InlineKeyboard()
+                {
+                    Buttons =
+                    {
+                        new KeyboardButton() {ButtonText = "1-1", CallbackData = "1/1", RowOrder = 1, ColumnOrder = 1},
+                        new KeyboardButton() {ButtonText = "1-2", CallbackData = "1/2", RowOrder = 1, ColumnOrder = 2},
+                        new KeyboardButton() {ButtonText = "2-1", CallbackData = "2/1", RowOrder = 2, ColumnOrder = 1},
+                        new KeyboardButton() {ButtonText = "2-3", CallbackData = "2/3", RowOrder = 2, ColumnOrder = 3},
+                        new KeyboardButton() {ButtonText = "4-1", CallbackData = "4/1", RowOrder = 4, ColumnOrder = 1}
+                    }
+                };
+                attachmentMessage.Attachments = new Attachment[]
+                {
+                    new Image()
+                    {
+                        File = new OutgoingLocalFile("C:\\Temp\\file8.jpg")
+                    },
+                };
+                yield return Task.FromResult(attachmentMessage);
             }
             else if (message.Attachments.Any())
             {
@@ -72,6 +123,9 @@ namespace Artice.WebApp
             return Task.FromResult(response);
         }
 
+
+
+
         private async Task<OutgoingMessage> SaveFile(Attachment attachment, IncomingMessage message)
         {
             var file = attachment.File;
@@ -91,11 +145,11 @@ namespace Artice.WebApp
 
         string ReflectMarkdown(string message)
         {
-            return message;
-            //.Replace("_", "\\_")
-            //.Replace("*", "\\*")
-            //.Replace("[", "\\[")
-            //.Replace("'", "\\'");
+            return message
+            .Replace("_", "\\_")
+            .Replace("*", "\\*")
+            .Replace("[", "\\[")
+            .Replace("'", "\\'");
         }
     }
 }

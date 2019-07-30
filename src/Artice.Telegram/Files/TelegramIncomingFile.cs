@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Artice.Core.Models;
 using System.Net.Http;
+using Artice.Core.Models.Files;
 
 namespace Artice.Telegram.Files
 {
-    public class TelegramFile : IFile
+    public class TelegramIncomingFile : IIncomingFile
     {
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 
-        public TelegramFile(Func<ITelegramHttpClient> clientConstructor)
+        public TelegramIncomingFile(Func<ITelegramHttpClient> clientConstructor)
         {
             _clientConstructor = clientConstructor;
         }
@@ -38,7 +38,7 @@ namespace Artice.Telegram.Files
             return Name;
         }
 
-        public async Task<int> GetFileSizeAsync(CancellationToken cancellationToken)
+        public async Task<long> GetFileSizeAsync(CancellationToken cancellationToken)
         {
             if (!FileSize.HasValue)
             {
@@ -72,11 +72,6 @@ namespace Artice.Telegram.Files
 
             return new ResponseMessageReadStream(
                 await response.Content.ReadAsStreamAsync(), response);
-        }
-
-        public string Serialize()
-        {
-            throw new NotImplementedException();
         }
 
         private async Task FillFileInfo(CancellationToken cancellationToken)

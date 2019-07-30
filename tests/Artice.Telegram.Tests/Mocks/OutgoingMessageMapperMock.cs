@@ -11,7 +11,12 @@ namespace Artice.Telegram.Tests.Mocks
     {
         public void VerifyObjectOnMap(Expression<Func<InlineKeyboard, bool>> match)
         {
-            Verify(mapper => mapper.Map(It.Is(match)), Times.Once);
+            VerifyObjectOnMap(match, Times.Once());
+        }
+
+        public void VerifyObjectOnMap(Expression<Func<InlineKeyboard, bool>> match, Times times)
+        {
+            Verify(mapper => mapper.Map(It.Is(match)), times);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Artice.Core.Models
+﻿using Artice.Core.Models.Files;
+
+namespace Artice.Core.Models
 {
     public abstract class Attachment
     {

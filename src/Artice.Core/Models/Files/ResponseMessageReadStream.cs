@@ -3,9 +3,9 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Artice.Telegram.Files
+namespace Artice.Core.Models.Files
 {
-    internal class ResponseMessageReadStream : Stream
+    public class ResponseMessageReadStream : Stream
     {
         private readonly Stream _inner;
         private readonly IDisposable _externalDisposable;
