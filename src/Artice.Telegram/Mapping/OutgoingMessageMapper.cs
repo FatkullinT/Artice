@@ -5,7 +5,7 @@ namespace Artice.Telegram.Mapping
 {
     public class OutgoingMessageMapper : IOutgoingMessageMapper
     {
-        public Artice.Telegram.Models.ReplyMarkups.InlineKeyboardMarkup Map(InlineKeyboard src)
+        public Artice.Telegram.Models.ReplyMarkups.InlineKeyboardMarkup Map(Keyboard src)
         {
             if (src == null)
                 return null;
@@ -31,7 +31,7 @@ namespace Artice.Telegram.Mapping
             return new Artice.Telegram.Models.InlineKeyboardButton()
             {
                 CallbackData = src.CallbackData,
-                Url = src.Url,
+                //Url = src.Url,
                 ButtonText = src.ButtonText
             };
         }

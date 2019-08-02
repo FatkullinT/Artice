@@ -44,14 +44,14 @@ namespace Artice.Telegram
 
             if (message.Attachments != null && message.Attachments.Any())
             {
-                var needSendMessage = !string.IsNullOrEmpty(message.Text) || message.InlineKeyboard != null;
+                var needSendMessage = !string.IsNullOrEmpty(message.Text) || message.Keyboard != null;
                 foreach (var attachment in message.Attachments)
                 {
                     var result = await SendAttachmentMessageAsync(
                         clientId,
                         needSendMessage ? message.Text : null,
                         attachment,
-                        replyMarkup: needSendMessage ? _mapper.Map(message.InlineKeyboard) : null,
+                        replyMarkup: needSendMessage ? _mapper.Map(message.Keyboard) : null,
                         parseMode: ParseMode.Markdown,
                         cancellationToken: cancellationToken);
 
@@ -68,7 +68,7 @@ namespace Artice.Telegram
                 await SendTextMessageAsync(
                     clientId,
                     message.Text,
-                    replyMarkup: _mapper.Map(message.InlineKeyboard),
+                    replyMarkup: _mapper.Map(message.Keyboard),
                     parseMode: ParseMode.Markdown,
                     cancellationToken: cancellationToken);
             }

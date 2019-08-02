@@ -55,6 +55,7 @@ namespace Artice.Vk.AspNetCore
 
             builder.Services.AddScoped<IIncomingMessageMapper, IncomingMessageMapper>();
             builder.Services.AddScoped<IIncomingAttachmentMapper, IncomingAttachmentMapper>();
+            builder.Services.AddScoped<IOutgoingMessageMapper, OutgoingMessageMapper>();
 
             return builder;
         }

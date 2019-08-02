@@ -63,7 +63,7 @@ namespace Artice.WebApp
             else if (string.Equals("/testPhotoWithKeyboard", message.Text, StringComparison.CurrentCultureIgnoreCase))
             {
                 var attachmentMessage = message.GetResponse("test photo response");
-                attachmentMessage.InlineKeyboard = new InlineKeyboard()
+                attachmentMessage.Keyboard = new Keyboard()
                 {
                     Buttons =
                     {
@@ -108,7 +108,7 @@ namespace Artice.WebApp
         private Task<OutgoingMessage> GetInlineKeyboard(IncomingMessage message)
         {
             var response = message.GetResponse("Тестовые инлайн-кнопки:");
-            response.InlineKeyboard = new InlineKeyboard()
+            response.Keyboard = new Keyboard()
             {
                 Buttons =
                 {

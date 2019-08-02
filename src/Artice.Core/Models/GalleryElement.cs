@@ -12,6 +12,6 @@
 
         public string ImageUrl { get; set; }
 
-        public InlineKeyboard InlineKeyboard { get; set; }
+        public Keyboard Keyboard { get; set; }
     }
 }

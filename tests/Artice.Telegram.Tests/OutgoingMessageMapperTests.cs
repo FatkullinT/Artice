@@ -13,7 +13,7 @@ namespace Artice.Telegram.Tests
         {
             //arrange
             var fixture = new Fixture();
-            var keyboard = fixture.Create<InlineKeyboard>();
+            var keyboard = fixture.Create<Keyboard>();
             var mapper = new OutgoingMessageMapper();
             
             //act

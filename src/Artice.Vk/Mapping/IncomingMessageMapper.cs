@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Linq;
 using Artice.Core.Models;
+using Artice.Vk.Models;
+using Newtonsoft.Json;
 
 namespace Artice.Vk.Mapping
 {
@@ -22,7 +24,7 @@ namespace Artice.Vk.Mapping
                 From = new User() { Id = MapId(src.FromId) },
                 Group = src.ChatId != src.FromId ? new Group() { Id = MapId(src.ChatId) } : null,
                 Text = src.Text,
-                CallbackData = src.Payload,
+                CallbackData = src.Payload != null ? JsonConvert.DeserializeObject<Payload>(src.Payload).Command : null,
                 Time = src.Date,
                 MessengerId = Consts.ChannelId
             };

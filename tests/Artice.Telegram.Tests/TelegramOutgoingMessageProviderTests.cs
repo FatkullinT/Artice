@@ -43,7 +43,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPost<Telegram.Models.Message>("sendMessage",
                 parameters => (string)parameters["chat_id"] == message.Group.Id
                               && (string)parameters["text"] == message.Text
@@ -98,7 +98,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendPhoto",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
@@ -168,7 +168,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendPhoto",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
@@ -226,7 +226,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendVideo",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
@@ -284,7 +284,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendAudio",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
@@ -342,7 +342,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendDocument",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
@@ -400,7 +400,7 @@ namespace Artice.Telegram.Tests
             await provider.SendMessageAsync(message);
 
             //assert
-            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.InlineKeyboard));
+            mapper.VerifyObjectOnMap(keyboard => ReferenceEquals(keyboard, message.Keyboard));
             clientMock.VerifyPostFiles<Artice.Telegram.Models.Message>("sendSticker",
                 parameters => parameters["chat_id"] == message.Group.Id
                               && parameters.ContainsKey("caption")
