@@ -42,5 +42,8 @@ namespace Artice.Vk.Models
 
         [JsonProperty("is_hq")]
         public bool IsHq { get; internal set; }
+
+        [JsonProperty("access_key")]
+        public string AccessKey { get; internal set; }
     }
 }

@@ -94,6 +94,9 @@ namespace Artice.WebApp
                 }
 
                 yield return Task.FromResult(message.GetResponse($"Сохранено {count} файлов"));
+                var fileResp = message.GetResponse($"Попытка вернуть те же файлы:");
+                fileResp.Attachments = message.Attachments;
+                yield return Task.FromResult(fileResp);
             }
             else if (!string.IsNullOrEmpty(message.CallbackData))
             {

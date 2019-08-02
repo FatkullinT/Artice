@@ -11,13 +11,18 @@ namespace Artice.Vk.Files
 
         public long OwnerId { get; set; }
 
+        public string AccessKey { get; set; }
+
         public string FileName { get; set; }
 
-        public VkIncomingFile(long fileId, long ownerId = 0)
+        public VkIncomingFile(long fileId, long ownerId, string accessKey)
         {
+            FileId = fileId;
+            OwnerId = ownerId;
+            AccessKey = accessKey;
         }
 
-        public VkIncomingFile() : this(0, 0)
+        public VkIncomingFile() : this(0, 0, null)
         { }
 
         public virtual Task<string> GetNameAsync(CancellationToken cancellationToken = default)

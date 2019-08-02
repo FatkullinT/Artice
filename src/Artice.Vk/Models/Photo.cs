@@ -33,5 +33,14 @@ namespace Artice.Vk.Models
 
         [JsonProperty("height")]
         public long Height { get; internal set; }
+
+        [JsonProperty("access_key")]
+        public string AccessKey { get; internal set; }
+
+        [JsonProperty("lat")]
+        public float Latitude { get; internal set; }
+
+        [JsonProperty("long")]
+        public float Longitude { get; internal set; }
     }
 }

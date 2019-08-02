@@ -10,8 +10,8 @@ namespace Artice.Vk.Files
 {
     public class VkIncomingWebFile : VkIncomingFile, IWebFile
     {
-        public VkIncomingWebFile(Func<IVkHttpClient> clientConstructor, long fileId, long ownerId = 0) 
-            : base(fileId, ownerId)
+        public VkIncomingWebFile(Func<IVkHttpClient> clientConstructor, long fileId, long ownerId, string accessKey) 
+            : base(fileId, ownerId, accessKey)
         {
             _clientConstructor = clientConstructor;
             FileSize = -1;
@@ -28,8 +28,6 @@ namespace Artice.Vk.Files
 
         public Uri Uri { get; set; }
 
-        public string FileName { get; set; }
-
         public string MimeType { get; set; }
 
         public long FileSize { get; set; }
@@ -37,11 +35,6 @@ namespace Artice.Vk.Files
         public Task<Uri> GetFileUriAsync()
         {
             return Task.FromResult(Uri);
-        }
-
-        public override Task<string> GetNameAsync(CancellationToken cancellationToken = default)
-        {
-            return Task.FromResult(FileName);
         }
 
         public override async Task<Stream> OpenReadStreamAsync(CancellationToken cancellationToken = default)

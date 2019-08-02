@@ -31,5 +31,8 @@ namespace Artice.Vk.Models
 
         [JsonProperty("type")]
         public DocumentType Type { get; internal set; }
+
+        [JsonProperty("access_key")]
+        public string AccessKey { get; internal set; }
     }
 }
