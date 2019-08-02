@@ -31,9 +31,8 @@ namespace Artice.Telegram.Files
         public async Task<string> GetNameAsync(CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(Name))
-            {
                 await FillFileInfo(cancellationToken);
-            }
+            
 
             return Name;
         }
@@ -41,9 +40,8 @@ namespace Artice.Telegram.Files
         public async Task<long> GetFileSizeAsync(CancellationToken cancellationToken)
         {
             if (!FileSize.HasValue)
-            {
                 await FillFileInfo(cancellationToken);
-            }
+            
 
             return FileSize ?? 0;
         }
@@ -64,11 +62,12 @@ namespace Artice.Telegram.Files
         public async Task<Stream> OpenReadStreamAsync(CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(FilePath))
-            {
                 await FillFileInfo(cancellationToken);
-            }
+            
 
             var response = await GetFileResponseAsync(cancellationToken);
+
+            MimeType = response.Content.Headers.ContentType.MediaType;
 
             return new ResponseMessageReadStream(
                 await response.Content.ReadAsStreamAsync(), response);

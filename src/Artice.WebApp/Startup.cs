@@ -2,6 +2,8 @@
 using Artice.Core.AspNetCore;
 using Artice.Telegram;
 using Artice.Telegram.AspNetCore;
+using Artice.Telegram.Configuration;
+using Artice.Vk.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -22,22 +24,25 @@ namespace Artice.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddArtice<Logic>(builder => builder
-                    .UseTelegramProvider(
-                        configuration => configuration
-                            .SetAccessToken(Configuration["Telegram:AccessToken"])
-                            .UseUpdatesReceivingMethod(UpdatesReceivingMethod.LongPolling)
-                        )
-                );
+                
+                .UseTelegramProvider(
+                    configuration => configuration
+                        .SetAccessToken(Configuration["Telegram:AccessToken"])
+                        .UseUpdatesReceivingMethod(UpdatesReceivingMethod.LongPolling))
+
+                .UseVkProvider(
+                    configuration => configuration
+                    .SetGroupCredentials(Configuration["Vk:GroupId"], Configuration["Vk:AccessToken"])
+                    .SetWebhookVerifyToken(Configuration["Vk:VerifyToken"])
+                    .UseUpdatesReceivingMethod(Vk.Configuration.UpdatesReceivingMethod.LongPolling))
+            );
         }
 
         public void Configure(IApplicationBuilder app)
         {
             app.UseArtice("/Artice");
 
-            app.Run(async context =>
-            {
-                await context.Response.WriteAsync("Hello from non-Map delegate.");
-            });
+            app.Run(async context => { await context.Response.WriteAsync("Hello from non-Map delegate."); });
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Artice.Telegram.Tests
             Assert.Equal(message.Time, incomingMessage.Time);
             Assert.Equal(message.From.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.From.Id);
             Assert.Equal(message.Text, incomingMessage.Text);
-            Assert.Equal(Consts.TelegramId, incomingMessage.MessengerId);
+            Assert.Equal(Consts.ChannelId, incomingMessage.MessengerId);
             Assert.Null(incomingMessage.CallbackData);
         }
 
@@ -73,7 +73,7 @@ namespace Artice.Telegram.Tests
             Assert.Equal(message.Time, incomingMessage.Time);
             Assert.Equal(message.From.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.From.Id);
             Assert.Equal(message.Text, incomingMessage.Text);
-            Assert.Equal(Consts.TelegramId, incomingMessage.MessengerId);
+            Assert.Equal(Consts.ChannelId, incomingMessage.MessengerId);
             Assert.Null(incomingMessage.CallbackData);
         }
 
@@ -106,7 +106,7 @@ namespace Artice.Telegram.Tests
             Assert.Equal(default, incomingMessage.Time);
             Assert.Equal(callbackQuery.From.Id.ToString(CultureInfo.InvariantCulture), incomingMessage.From.Id);
             Assert.Null(incomingMessage.Text);
-            Assert.Equal(Consts.TelegramId, incomingMessage.MessengerId);
+            Assert.Equal(Consts.ChannelId, incomingMessage.MessengerId);
             Assert.Equal(callbackQuery.CallbackData, incomingMessage.CallbackData);
         }
 

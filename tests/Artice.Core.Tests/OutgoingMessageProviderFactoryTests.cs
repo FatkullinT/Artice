@@ -18,7 +18,7 @@ namespace Artice.Core.Tests
 			var factory = new OutgoingMessageProviderFactory(providers);
 			
 			//act
-			var provider = factory.GetProvider(expectedProvider.MessengerId);
+			var provider = factory.GetProvider(expectedProvider.ChannelId);
 			
 			//assert
 			Assert.Same(expectedProvider, provider);

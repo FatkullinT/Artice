@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Artice.Core.Exceptions;
 using Artice.Core.Models.Files;
+using Artice.Telegram.Configuration;
 using Artice.Telegram.Files;
 using Artice.Telegram.Models;
 using Newtonsoft.Json;
@@ -36,7 +37,6 @@ namespace Artice.Telegram
             client.BaseAddress = new Uri(Consts.BaseUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.AcceptEncoding.ParseAdd("gzip,deflate");
             return client;
         }
 
@@ -178,7 +178,7 @@ namespace Artice.Telegram
 
             throw new ApiRequestException(messageBuilder.ToString())
             {
-                BotApiIdentifier = Consts.TelegramId,
+                BotApiIdentifier = Consts.ChannelId,
                 StatusCode = response.StatusCode
             };
         }
@@ -190,7 +190,7 @@ namespace Artice.Telegram
 
             throw new ApiRequestException($"Api returned error.\n\r  ErrorDetails: {response.Message}")
             {
-                BotApiIdentifier = Consts.TelegramId,
+                BotApiIdentifier = Consts.ChannelId,
                 StatusCode = HttpStatusCode.OK,
                 ErrorCode = response.Code.ToString(CultureInfo.InvariantCulture)
             };

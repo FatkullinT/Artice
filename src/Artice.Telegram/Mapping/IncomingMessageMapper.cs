@@ -24,7 +24,7 @@ namespace Artice.Telegram.Mapping
                 Id = MapId(message.Id),
                 Group = MapGroup(message.Chat),
                 From = Map(message.From),
-                MessengerId = Consts.TelegramId,
+                MessengerId = Consts.ChannelId,
                 Attachments = _incomingAttachmentMapper.Map(message).ToArray()
             };
         }
@@ -36,7 +36,7 @@ namespace Artice.Telegram.Mapping
                 Id = callbackQuery.Id,
                 Group = callbackQuery.Message != null ? MapGroup(callbackQuery.Message.Chat) : null,
                 From = Map(callbackQuery.From),
-                MessengerId = Consts.TelegramId,
+                MessengerId = Consts.ChannelId,
                 CallbackData = callbackQuery.CallbackData,
                 Attachments = Array.Empty<Attachment>()
             };

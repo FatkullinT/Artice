@@ -47,7 +47,7 @@ namespace Artice.Tests
 
 			//assert
 			logicMock.VerifyAnswer(
-				messageProvider => messageProvider.MessengerId == messengerId,
+				messageProvider => messageProvider.ChannelId == messengerId,
 				message => message == incomingMessage,
 				context => context.Recipient == recipient);
 		}
@@ -87,7 +87,7 @@ namespace Artice.Tests
 
 			//assert
 			logicMock.VerifyAnswer(
-				messageProvider => messageProvider.MessengerId == messengerId,
+				messageProvider => messageProvider.ChannelId == messengerId,
 				message => message == incomingMessage,
 				context => context.Recipient == recipient);
 		}

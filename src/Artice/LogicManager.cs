@@ -75,7 +75,7 @@ namespace Artice
             }
             catch (ArticeExecutionException ex)
             {
-                _logger.LogError(ex, $"Bot:{ex.BotApiIdentifier} Message:{ex.Message}");
+                _logger.LogError(ex, $"Channel:{ex.BotApiIdentifier} Message:{ex.Message}");
                 //throw;
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Artice.Core.AspNetCore;
 using Artice.Core.IncomingMessages;
+using Artice.Telegram.Configuration;
 using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,8 +38,7 @@ namespace Artice.Telegram.AspNetCore
                 TelegramHttpClient.ConfigureClient(client);
             });
 
-            builder.Services.AddSingleton(provider =>
-                new Func<ITelegramHttpClient>(() => provider.GetService<ITelegramHttpClient>()));
+            builder.Services.AddSingleton(provider => new Func<ITelegramHttpClient>(provider.GetService<ITelegramHttpClient>));
 
             configureHttpClient?.Invoke(httpClientBuilder);
 

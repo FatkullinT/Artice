@@ -44,7 +44,11 @@ namespace Artice.Core.AspNetCore
 					if (updateHandler != null && await updateHandler.CheckRequest(context.Request))
 					{
 						var incomingMessage = await updateHandler.HandleAsync(context);
-						var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
+
+                        if (incomingMessage == null)
+                            return;
+
+                        var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
 
 						foreach (var handler in handlers)
 						{

@@ -31,5 +31,17 @@ namespace Artice.Telegram.Models
         /// </summary>
         [JsonProperty(PropertyName = "emoji", Required = Required.Default)]
         public string Emoji { get; set; }
+
+        /// <summary>
+        /// Sticker set name
+        /// </summary>
+        [JsonProperty(PropertyName = "set_name", Required = Required.Default)]
+        public string SetName { get; set; }
+
+        /// <summary>
+        /// Is animated sticker
+        /// </summary>
+        [JsonProperty(PropertyName = "is_animated", Required = Required.Default)]
+        public bool IsAnimated { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace Artice.Testing.Core
 	{
 		public OutgoingMessageProviderMock(string providerId)
 		{
-			Setup(provider => provider.MessengerId).Returns(providerId);
+			Setup(provider => provider.ChannelId).Returns(providerId);
 		}
 
 		public void VerifySendMessage(Expression<Func<OutgoingMessage, bool>> match, Times times)

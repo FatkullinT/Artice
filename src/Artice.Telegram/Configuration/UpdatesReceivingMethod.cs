@@ -1,4 +1,4 @@
-﻿namespace Artice.Telegram
+﻿namespace Artice.Telegram.Configuration
 {
     public enum UpdatesReceivingMethod
     {

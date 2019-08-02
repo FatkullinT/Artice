@@ -26,21 +26,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5937E8DD-561F-459C-8CD1-783D252078B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Core.Tests", "tests\Artice.Core.Tests\Artice.Core.Tests.csproj", "{5B13211A-A5BF-466D-B64A-4BE56348B100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Core.Tests", "tests\Artice.Core.Tests\Artice.Core.Tests.csproj", "{5B13211A-A5BF-466D-B64A-4BE56348B100}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{C6178002-FA50-4061-AF68-FE7B558A946E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Testing.Core", "src\Testing\Artice.Testing.Core\Artice.Testing.Core.csproj", "{58C5ABE4-E548-498F-8947-A9C6BD15B2FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Testing.Core", "src\Testing\Artice.Testing.Core\Artice.Testing.Core.csproj", "{58C5ABE4-E548-498F-8947-A9C6BD15B2FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Telegram.Tests", "tests\Artice.Telegram.Tests\Artice.Telegram.Tests.csproj", "{6876A7D8-3838-4DAC-9FB6-769060DA6FF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Telegram.Tests", "tests\Artice.Telegram.Tests\Artice.Telegram.Tests.csproj", "{6876A7D8-3838-4DAC-9FB6-769060DA6FF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.AspNetCore", "src\AspNetCore\Artice.AspNetCore\Artice.AspNetCore.csproj", "{07595A54-05C6-46AF-BC64-ED7808F51B6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.AspNetCore", "src\AspNetCore\Artice.AspNetCore\Artice.AspNetCore.csproj", "{07595A54-05C6-46AF-BC64-ED7808F51B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Tests", "tests\Artice.Tests\Artice.Tests.csproj", "{85D55204-DE7E-404C-AB1F-BFC9202AB228}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Tests", "tests\Artice.Tests\Artice.Tests.csproj", "{85D55204-DE7E-404C-AB1F-BFC9202AB228}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Testing", "src\Testing\Artice.Testing\Artice.Testing.csproj", "{0EE6371E-543A-413C-BC07-0546FC0F6AE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Testing", "src\Testing\Artice.Testing\Artice.Testing.csproj", "{0EE6371E-543A-413C-BC07-0546FC0F6AE5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06CB2840-CD3F-4EEB-B267-3153855D6D93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk", "src\Artice.Vk\Artice.Vk.csproj", "{10E803D1-8A9E-4652-8168-2D0A310B77B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk.AspNetCore", "src\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj", "{4A04C809-2467-4246-A552-21A8266F54E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,6 +100,14 @@ Global
 		{0EE6371E-543A-413C-BC07-0546FC0F6AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EE6371E-543A-413C-BC07-0546FC0F6AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0EE6371E-543A-413C-BC07-0546FC0F6AE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10E803D1-8A9E-4652-8168-2D0A310B77B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10E803D1-8A9E-4652-8168-2D0A310B77B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10E803D1-8A9E-4652-8168-2D0A310B77B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10E803D1-8A9E-4652-8168-2D0A310B77B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A04C809-2467-4246-A552-21A8266F54E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A04C809-2467-4246-A552-21A8266F54E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A04C809-2467-4246-A552-21A8266F54E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A04C809-2467-4246-A552-21A8266F54E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +127,8 @@ Global
 		{07595A54-05C6-46AF-BC64-ED7808F51B6C} = {A5652DCC-9481-46E7-B00F-2E394F775172}
 		{85D55204-DE7E-404C-AB1F-BFC9202AB228} = {5937E8DD-561F-459C-8CD1-783D252078B3}
 		{0EE6371E-543A-413C-BC07-0546FC0F6AE5} = {C6178002-FA50-4061-AF68-FE7B558A946E}
+		{10E803D1-8A9E-4652-8168-2D0A310B77B0} = {06CB2840-CD3F-4EEB-B267-3153855D6D93}
+		{4A04C809-2467-4246-A552-21A8266F54E5} = {A5652DCC-9481-46E7-B00F-2E394F775172}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {646A9E83-6A97-46C3-BB81-051664256F21}

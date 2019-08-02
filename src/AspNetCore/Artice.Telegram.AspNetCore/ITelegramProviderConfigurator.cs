@@ -1,4 +1,6 @@
-﻿namespace Artice.Telegram.AspNetCore
+﻿using Artice.Telegram.Configuration;
+
+namespace Artice.Telegram.AspNetCore
 {
 	public interface ITelegramProviderConfigurator
 	{

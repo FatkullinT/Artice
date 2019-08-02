@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Timur Fatkullin</Authors>
+    <Company>Timur Fatkullin</Company>
+    <Product>Artice</Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Artice.Vk\Artice.Vk.csproj" />
+    <ProjectReference Include="..\AspNetCore\Artice.Core.AspNetCore\Artice.Core.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

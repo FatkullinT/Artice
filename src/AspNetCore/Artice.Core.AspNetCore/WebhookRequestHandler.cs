@@ -30,21 +30,20 @@ namespace Artice.Core.AspNetCore
 				using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
 				{
 					var content = await readStream.ReadToEndAsync();
-					var incomingMessage = await ConvertJsonContent(content);
-					await MakeResponse(context);
+					var updateObject = await ConvertJsonContent(content);
+                    var incomingMessage = await _updateHandler.HandleAsync(updateObject);
+                    await MakeResponse(context, updateObject);
 					return incomingMessage;
 				}
 			}
 		}
 
-		protected virtual async Task<IncomingMessage> ConvertJsonContent(string content)
+		protected virtual Task<TUpdate> ConvertJsonContent(string content)
 		{
-			var updateModel = JsonConvert.DeserializeObject<TUpdate>(content);
-			var incomingMessage = await _updateHandler.HandleAsync(updateModel);
-			return incomingMessage;
-		}
+			return Task.FromResult(JsonConvert.DeserializeObject<TUpdate>(content));
+        }
 
-		protected virtual Task MakeResponse(HttpContext context)
+		protected virtual Task MakeResponse(HttpContext context, TUpdate updateObject)
 		{
 			context.Response.StatusCode = StatusCodes.Status200OK;
 			return Task.CompletedTask;

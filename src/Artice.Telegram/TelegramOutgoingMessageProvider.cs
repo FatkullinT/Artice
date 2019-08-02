@@ -25,7 +25,7 @@ namespace Artice.Telegram
         private readonly IIncomingAttachmentMapper _attachmentMapper;
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 
-        public string MessengerId => Consts.TelegramId;
+        public string ChannelId => Consts.ChannelId;
 
         public TelegramOutgoingMessageProvider(
             IOutgoingMessageMapper mapper,

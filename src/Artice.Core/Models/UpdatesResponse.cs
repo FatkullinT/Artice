@@ -6,6 +6,6 @@ namespace Artice.Core.Models
     {
         public IEnumerable<TUpdate> Updates { get; set; }
 
-        public string Cursor { get; set; }
+        public Dictionary<string, string> ContextData { get; set; }
     }
 }

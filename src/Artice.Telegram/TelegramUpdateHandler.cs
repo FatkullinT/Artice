@@ -33,7 +33,6 @@ namespace Artice.Telegram
                     return _mapper.Map(update.CallbackQuery);
 
                 default:
-                    //todo: Check success deserialization
                     return null;
             }
         }

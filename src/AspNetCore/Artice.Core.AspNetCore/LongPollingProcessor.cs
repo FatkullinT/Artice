@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Artice.Core.IncomingMessages;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,7 @@ namespace Artice.Core.AspNetCore
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _rootServiceProvider;
         //todo: remove to external state storage
-        private string _cursor = null;
+        private Dictionary<string, string> _contextData = null;
 
         public LongPollingProcessor(
             IInterrogator<TUpdate> interrogator,
@@ -26,13 +27,16 @@ namespace Artice.Core.AspNetCore
         {
             while (!_cancellationTokenSource.IsCancellationRequested)
             {
-                var updateCollection = await _interrogator.GetUpdatesAsync(_cursor, _cancellationTokenSource.Token);
+                var updateCollection = await _interrogator.GetUpdatesAsync(_contextData, _cancellationTokenSource.Token);
                 foreach (var update in updateCollection.Updates)
                 {
                     using (var scope = _rootServiceProvider.CreateScope())
                     {
                         var updateHandler = scope.ServiceProvider.GetService<IIncomingUpdateHandler<TUpdate>>();
                         var incomingMessage = await updateHandler.HandleAsync(update, _cancellationTokenSource.Token);
+
+                        if (incomingMessage == null)
+                            continue;
 
                         var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
                         foreach (var handler in handlers)
@@ -42,7 +46,7 @@ namespace Artice.Core.AspNetCore
                     }
                 }
 
-                _cursor = updateCollection.Cursor;
+                _contextData = updateCollection.ContextData;
             }
         }
 

@@ -13,29 +13,42 @@ namespace Artice.Telegram
     public class TelegramInterrogator : IInterrogator<Update>
     {
         private readonly Func<ITelegramHttpClient> _clientConstructor;
-
+        private const string CursorKeyName = "Cursor";
         public TelegramInterrogator(Func<ITelegramHttpClient> clientConstructor)
         {
             _clientConstructor = clientConstructor;
         }
 
-        public async Task<UpdatesResponse<Update>> GetUpdatesAsync(string cursor, CancellationToken cancellationToken)
+        public async Task<UpdatesResponse<Update>> GetUpdatesAsync(Dictionary<string, string> contextData, CancellationToken cancellationToken)
         {
             var parameters = new Dictionary<string, object>()
             {
                 {"timeout", Consts.LongPoolingTimeout}
             };
 
-            if (!string.IsNullOrEmpty(cursor))
-                parameters.Add("offset", cursor);
+            if (contextData != null)
+                parameters.Add("offset", contextData[CursorKeyName]);
 
             var response = await _clientConstructor().GetAsync<Update[]>("getUpdates", parameters, cancellationToken);
 
             var nextCursor = response.ResultObject.Any() ? response.ResultObject.Max(update => update.Id) + 1 : 0;
+            var nextCursorStr = nextCursor > 0 ? nextCursor.ToString(CultureInfo.InvariantCulture) : null;
+
+            if (contextData == null)
+            {
+                contextData = new Dictionary<string, string>()
+                {
+                    {CursorKeyName, nextCursorStr}
+                };
+            }
+            else
+            {
+                contextData[CursorKeyName] = nextCursorStr;
+            }
 
             return new UpdatesResponse<Update>()
             {
-                Cursor = nextCursor > 0 ? nextCursor.ToString(CultureInfo.InvariantCulture) : null,
+                ContextData = contextData,
                 Updates = response.ResultObject
             };
         }

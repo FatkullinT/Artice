@@ -66,7 +66,9 @@ namespace Artice.Telegram.Mapping
                 case MessageType.StickerMessage:
                     yield return new Sticker()
                     {
+                        ChannelId = Consts.ChannelId,
                         StickerId = src.Sticker.Emoji,
+                        CollectionId = src.Sticker.SetName,
                         File = CreateTelegramFile(src.Sticker.FileId)
                     };
                     break;
