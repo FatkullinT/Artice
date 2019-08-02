@@ -11,6 +11,8 @@ namespace Artice.Vk.Files
 
         public long OwnerId { get; set; }
 
+        public string FileName { get; set; }
+
         public VkIncomingFile(long fileId, long ownerId = 0)
         {
         }
@@ -20,7 +22,7 @@ namespace Artice.Vk.Files
 
         public virtual Task<string> GetNameAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult($"{GetType().Name}_{OwnerId}_{FileId}");
+            return Task.FromResult(FileName ?? $"{GetType().Name}_{OwnerId}_{FileId}");
         }
 
         public virtual Task<Stream> OpenReadStreamAsync(CancellationToken cancellationToken = default)

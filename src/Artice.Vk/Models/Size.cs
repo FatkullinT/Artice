@@ -4,8 +4,8 @@ namespace Artice.Vk.Models
 {
     public class Size
     {
-        [JsonProperty("src")]
-        public string Src { get; internal set; }
+        [JsonProperty("url")]
+        public string Url { get; internal set; }
 
         [JsonProperty("width")]
         public long Width { get; internal set; }

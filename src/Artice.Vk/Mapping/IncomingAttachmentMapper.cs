@@ -27,19 +27,24 @@ namespace Artice.Vk.Mapping
                     var maxPhoto = src.Photo.Sizes.First(photo => photo.Height * photo.Width == photoMaxSize);
                     return new Image()
                     {
-                        File = CreateVkFile(maxPhoto.Src, src.Photo.Id, src.Photo.OwnerId)
+                        File = CreateVkFile(maxPhoto.Url, src.Photo.Id, src.Photo.OwnerId)
                     };
 
                 case AttachmentType.Video:
                     return new Video()
                     {
-                        File = GetVideoFile(src.Video)
+                        File = GetVideoFile(src.Video, ConvertFileName(src.Video.Title, 75))
                     };
 
                 case AttachmentType.Audio:
+                    string fileName = null;
+
+                    if (!string.IsNullOrWhiteSpace(src.Audio.Artist) && !string.IsNullOrWhiteSpace(src.Audio.Title))
+                        fileName = $"{ConvertFileName(src.Audio.Artist, 50)}-{ConvertFileName(src.Audio.Title, 50)}";
+
                     return new Audio()
                     {
-                        File = CreateVkFile(src.Audio.Url, src.Audio.Id, src.Audio.OwnerId)
+                        File = CreateVkFile(src.Audio.Url, src.Audio.Id, src.Audio.OwnerId, fileName)
                     };
 
                 case AttachmentType.Document:
@@ -65,7 +70,15 @@ namespace Artice.Vk.Mapping
             }
         }
 
-        private IFile GetVideoFile(Models.Video src)
+        private string ConvertFileName(string src, int maxLength)
+        {
+            if (string.IsNullOrEmpty(src))
+                return null;
+
+            return (src.Length > maxLength ? src.Substring(0, maxLength) : src).Replace(' ', '_');
+        }
+
+        private IFile GetVideoFile(Models.Video src, string fileName)
         {
             if (src.Files != null && src.Files.Any())
             {
@@ -92,17 +105,28 @@ namespace Artice.Vk.Mapping
             }
 
             if (src.Player != null)
-                new VkIncomingPlayer(src.Id, src.OwnerId) { PlayerUri = new Uri(src.Player) };
+                return new VkIncomingPlayer(src.Id, src.OwnerId) { PlayerUri = new Uri(src.Player), FileName = fileName };
 
-            return new VkIncomingFile(src.Id, src.OwnerId);
+            return new VkIncomingFile(src.Id, src.OwnerId) {FileName = fileName };
         }
 
-        private VkIncomingWebFile CreateVkFile(string uri, long fileId, long ownerId = 0, string fileName = null)
+        private VkIncomingWebFile CreateVkFile(string url, long fileId, long ownerId = 0, string fileName = null)
         {
+            var uri = new Uri(url);
+
+            if (fileName == null)
+            {
+                fileName = Path.GetFileName(uri.AbsolutePath);
+            }
+            else if (!Path.HasExtension(fileName))
+            {
+                fileName = $"{fileName}{Path.GetExtension(uri.AbsolutePath)}";
+            }
+
             return new VkIncomingWebFile(_clientConstructor, fileId, ownerId)
             {
-                Uri = new Uri(uri),
-                FileName = fileName ?? Path.GetFileName(uri)
+                Uri = uri,
+                FileName = fileName
             };
         }
     }

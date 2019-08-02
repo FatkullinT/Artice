@@ -69,7 +69,7 @@ namespace Artice.Telegram
                     clientId,
                     message.Text,
                     replyMarkup: _mapper.Map(message.Keyboard),
-                    parseMode: ParseMode.Markdown,
+                    parseMode: ParseMode.Default,
                     cancellationToken: cancellationToken);
             }
 
