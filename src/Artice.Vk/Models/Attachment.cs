@@ -8,19 +8,22 @@ namespace Artice.Vk.Models
         [JsonProperty("type")]
         public AttachmentType Type { get; internal set; }
 
-        [JsonProperty("photo")]
+        [JsonProperty(AttachmentTypeNames.Photo)]
         public Photo Photo { get; internal set; }
 
-        [JsonProperty("video")]
+        [JsonProperty(AttachmentTypeNames.Video)]
         public Video Video { get; internal set; }
 
-        [JsonProperty("audio")]
+        [JsonProperty(AttachmentTypeNames.Audio)]
         public Audio Audio { get; internal set; }
 
-        [JsonProperty("doc")]
+        [JsonProperty(AttachmentTypeNames.AudioMessage)]
+        public AudioMessage AudioMessage { get; internal set; }
+
+        [JsonProperty(AttachmentTypeNames.Document)]
         public Document Document { get; internal set; }
 
-        [JsonProperty("sticker")]
+        [JsonProperty(AttachmentTypeNames.Sticker)]
         public Sticker Sticker { get; internal set; }
     }
 }

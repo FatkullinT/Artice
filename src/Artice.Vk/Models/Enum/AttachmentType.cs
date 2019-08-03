@@ -4,37 +4,40 @@ namespace Artice.Vk.Models.Enum
 {
     public enum AttachmentType
     {
-        [EnumMember(Value = "photo")]
+        [EnumMember(Value = AttachmentTypeNames.Photo)]
         Photo,
 
-        [EnumMember(Value = "video")]
+        [EnumMember(Value = AttachmentTypeNames.Video)]
         Video,
 
-        [EnumMember(Value = "audio")]
+        [EnumMember(Value = AttachmentTypeNames.Audio)]
         Audio,
 
-        [EnumMember(Value = "doc")]
+        [EnumMember(Value = AttachmentTypeNames.AudioMessage)]
+        AudioMessage,
+
+        [EnumMember(Value = AttachmentTypeNames.Document)]
         Document,
 
-        [EnumMember(Value = "link")]
+        [EnumMember(Value = AttachmentTypeNames.Link)]
         Link,
 
-        [EnumMember(Value = "market")]
+        [EnumMember(Value = AttachmentTypeNames.Market)]
         Market,
 
-        [EnumMember(Value = "market_album")]
+        [EnumMember(Value = AttachmentTypeNames.MarketAlbum)]
         MarketAlbum,
 
-        [EnumMember(Value = "wall")]
+        [EnumMember(Value = AttachmentTypeNames.Wall)]
         Wall,
 
-        [EnumMember(Value = "wall_reply")]
+        [EnumMember(Value = AttachmentTypeNames.WallReply)]
         WallReply,
 
-        [EnumMember(Value = "sticker")]
+        [EnumMember(Value = AttachmentTypeNames.Sticker)]
         Sticker,
 
-        [EnumMember(Value = "gift")]
+        [EnumMember(Value = AttachmentTypeNames.Gift)]
         Gift
     }
 }

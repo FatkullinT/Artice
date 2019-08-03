@@ -20,7 +20,7 @@ namespace Artice.Vk.Models
         public long Size { get; internal set; }
 
         [JsonProperty("ext")]
-        public string Extention { get; internal set; }
+        public string Extension { get; internal set; }
 
         [JsonProperty("url")]
         public string Url { get; internal set; }

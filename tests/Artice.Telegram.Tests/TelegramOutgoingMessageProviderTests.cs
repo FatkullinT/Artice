@@ -67,7 +67,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Image>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();
@@ -138,7 +138,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Image>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();
@@ -196,7 +196,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Video>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();
@@ -254,7 +254,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Audio>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();
@@ -312,7 +312,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Document>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();
@@ -370,7 +370,7 @@ namespace Artice.Telegram.Tests
 
             var attachments2 = fixture
                 .Build<Sticker>()
-                .With(image => image.File, () => fixture.Create<OutgoingFileByUri>())
+                .With(image => image.File, () => fixture.Create<FileByUri>())
                 .CreateMany(1)
                 .Select(image => (Attachment)image)
                 .ToArray();

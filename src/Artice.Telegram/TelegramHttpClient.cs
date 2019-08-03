@@ -128,13 +128,9 @@ namespace Artice.Telegram
             CancellationToken cancellationToken)
         {
             HttpResponseMessage response = await _httpClient.PostAsync(GetMethodPath(method), httpContent, cancellationToken);
-
             await ThrowIfNotSuccess(response);
-
             var apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
-
             ThrowIfNotSuccess(apiResponse);
-
             return apiResponse;
         }
 

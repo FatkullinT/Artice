@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using Artice.Core.AspNetCore;
 using Artice.Core.IncomingMessages;
 using Artice.Vk.Configuration;
@@ -52,6 +50,13 @@ namespace Artice.Vk.AspNetCore
             builder.Services.AddSingleton(provider => new Func<IVkHttpClient>(provider.GetService<IVkHttpClient>));
 
             configureHttpClient?.Invoke(httpClientBuilder);
+
+            var uploadHttpClientBuilder = builder.Services.AddHttpClient<IVkUploadHttpClient, VkUploadHttpClient>(client =>
+            {
+                VkHttpClient.ConfigureClient(client);
+            });
+            builder.Services.AddSingleton(provider => new Func<IVkUploadHttpClient>(provider.GetService<IVkUploadHttpClient>));
+            configureHttpClient?.Invoke(uploadHttpClientBuilder);
 
             builder.Services.AddScoped<IIncomingMessageMapper, IncomingMessageMapper>();
             builder.Services.AddScoped<IIncomingAttachmentMapper, IncomingAttachmentMapper>();

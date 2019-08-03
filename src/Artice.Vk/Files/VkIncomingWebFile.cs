@@ -10,8 +10,8 @@ namespace Artice.Vk.Files
 {
     public class VkIncomingWebFile : VkIncomingFile, IWebFile
     {
-        public VkIncomingWebFile(Func<IVkHttpClient> clientConstructor, long fileId, long ownerId, string accessKey) 
-            : base(fileId, ownerId, accessKey)
+        public VkIncomingWebFile(Func<IVkHttpClient> clientConstructor, string fileType, long fileId, long ownerId, string accessKey) 
+            : base(fileType, fileId, ownerId, accessKey)
         {
             _clientConstructor = clientConstructor;
             FileSize = -1;

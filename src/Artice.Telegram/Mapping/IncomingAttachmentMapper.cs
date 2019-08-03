@@ -59,7 +59,7 @@ namespace Artice.Telegram.Mapping
                     yield return new Document()
                     {
                         File = CreateTelegramFile(src.Document.FileId, src.Document.MimeType, src.Document.FileName),
-                        Extention = Path.GetExtension(src.Document.FileName)
+                        Extension = Path.GetExtension(src.Document.FileName)
                     };
                     break;
 

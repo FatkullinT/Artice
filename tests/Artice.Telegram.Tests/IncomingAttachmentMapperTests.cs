@@ -119,7 +119,7 @@ namespace Artice.Telegram.Tests
             //assert
             var attachment = Assert.Single(markup);
             var document = Assert.IsType<Document>(attachment);
-            Assert.Equal(".txt", document.Extention);
+            Assert.Equal(".txt", document.Extension);
             Assert.NotNull(attachment.File);
             Assert.Equal(message.Document.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }

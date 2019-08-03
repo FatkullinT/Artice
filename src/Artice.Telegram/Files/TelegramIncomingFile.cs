@@ -32,7 +32,6 @@ namespace Artice.Telegram.Files
         {
             if (string.IsNullOrEmpty(Name))
                 await FillFileInfo(cancellationToken);
-            
 
             return Name;
         }
@@ -41,7 +40,6 @@ namespace Artice.Telegram.Files
         {
             if (!FileSize.HasValue)
                 await FillFileInfo(cancellationToken);
-            
 
             return FileSize ?? 0;
         }

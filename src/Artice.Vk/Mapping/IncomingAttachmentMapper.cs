@@ -5,7 +5,13 @@ using Artice.Core.Models;
 using Artice.Core.Models.Files;
 using Artice.Vk.Files;
 using Artice.Vk.HttpClients;
+using Artice.Vk.Models;
 using Artice.Vk.Models.Enum;
+using Attachment = Artice.Core.Models.Attachment;
+using Audio = Artice.Core.Models.Audio;
+using Document = Artice.Core.Models.Document;
+using Sticker = Artice.Core.Models.Sticker;
+using Video = Artice.Core.Models.Video;
 
 namespace Artice.Vk.Mapping
 {
@@ -23,51 +29,81 @@ namespace Artice.Vk.Mapping
             switch (src.Type)
             {
                 case AttachmentType.Photo:
-                    var photoMaxSize = src.Photo.Sizes.Max(p => p.Height * p.Width);
-                    var maxPhoto = src.Photo.Sizes.First(photo => photo.Height * photo.Width == photoMaxSize);
-                    return new Image()
-                    {
-                        File = CreateVkFile(maxPhoto.Url, src.Photo.Id, src.Photo.OwnerId, src.Photo.AccessKey)
-                    };
-
+                    return Map(src.Photo);
                 case AttachmentType.Video:
-                    return new Video()
-                    {
-                        File = GetVideoFile(src.Video, ConvertFileName(src.Video.Title, 75))
-                    };
-
+                    return Map(src.Video);
                 case AttachmentType.Audio:
-                    string fileName = null;
-
-                    if (!string.IsNullOrWhiteSpace(src.Audio.Artist) && !string.IsNullOrWhiteSpace(src.Audio.Title))
-                        fileName = $"{ConvertFileName(src.Audio.Artist, 50)}-{ConvertFileName(src.Audio.Title, 50)}";
-
-                    return new Audio()
-                    {
-                        File = CreateVkFile(src.Audio.Url, src.Audio.Id, src.Audio.OwnerId, src.Audio.AccessKey, fileName)
-                    };
-
+                    return Map(src.Audio);
+                case AttachmentType.AudioMessage:
+                    return Map(src.AudioMessage);
                 case AttachmentType.Document:
-                    return new Document()
-                    {
-                        File = CreateVkFile(src.Document.Url, src.Document.Id, src.Document.OwnerId, src.Document.AccessKey, src.Document.Title),
-                        Extention = src.Document.Extention != null ? $".{src.Document.Extention.Trim('.')}" : null
-                    };
-
+                    return Map(src.Document);
                 case AttachmentType.Sticker:
-                    var stickerMaxSize = src.Sticker.Images.Max(p => p.Height * p.Width);
-                    var maxSticker = src.Sticker.Images.First(photo => photo.Height * photo.Width == stickerMaxSize);
-                    return new Sticker()
-                    {
-                        ChannelId = Consts.ChannelId,
-                        StickerId = src.Sticker.Id.ToString(),
-                        CollectionId = src.Sticker.ProductId.ToString(),
-                        File = CreateVkFile(maxSticker.Url, src.Sticker.Id, 0, null)
-                    };
-
+                    return Map(src.Sticker);
                 default:
                     return null;
             }
+        }
+
+        public Sticker Map(Models.Sticker src)
+        {
+            var stickerMaxSize = src.Images.Max(p => p.Height * p.Width);
+            var maxSticker = src.Images.First(photo => photo.Height * photo.Width == stickerMaxSize);
+            return new Sticker()
+            {
+                ChannelId = Consts.ChannelId,
+                StickerId = src.Id.ToString(),
+                CollectionId = src.ProductId.ToString(),
+                File = new FileByUri(new Uri(maxSticker.Url))
+            };
+        }
+
+        public Document Map(Models.Document src)
+        {
+            return new Document()
+            {
+                File = CreateVkFile(AttachmentTypeNames.Document, src.Url, src.Id, src.OwnerId, src.AccessKey, src.Title),
+                Extension = src.Extension != null ? $".{src.Extension.Trim('.')}" : null
+            };
+        }
+
+        public Audio Map(Models.AudioMessage src)
+        {
+            return new Audio()
+            {
+                File = new FileByUri(new Uri(src.LinkMp3))
+            };
+        }
+
+        public Audio Map(Models.Audio src)
+        {
+            string fileName = null;
+
+            if (!string.IsNullOrWhiteSpace(src.Artist) && !string.IsNullOrWhiteSpace(src.Title))
+                fileName = $"{ConvertFileName(src.Artist, 50)}-{ConvertFileName(src.Title, 50)}";
+
+            return new Audio()
+            {
+                File = CreateVkFile(AttachmentTypeNames.Audio, src.Url, src.Id, src.OwnerId, src.AccessKey, fileName)
+            };
+        }
+
+        public Video Map(Models.Video src)
+        {
+            return new Video()
+            {
+                File = GetVideoFile(src, AttachmentTypeNames.Video, ConvertFileName(src.Title, 75))
+            };
+        }
+
+        public Image Map(Models.Photo src)
+        {
+            var photoMaxSize = src.Sizes.Max(p => p.Height * p.Width);
+            var maxPhoto = src.Sizes.First(photo => photo.Height * photo.Width == photoMaxSize);
+            return new Image()
+            {
+                File = CreateVkFile(AttachmentTypeNames.Photo, maxPhoto.Url, src.Id, src.OwnerId, src.AccessKey)
+            };
         }
 
         private string ConvertFileName(string src, int maxLength)
@@ -82,7 +118,7 @@ namespace Artice.Vk.Mapping
                 .Replace(':', '_');
         }
 
-        private IFile GetVideoFile(Models.Video src, string fileName)
+        private IFile GetVideoFile(Models.Video src, string fileType, string fileName)
         {
             if (src.Files != null && src.Files.Any())
             {
@@ -105,16 +141,16 @@ namespace Artice.Vk.Mapping
                 if (string.IsNullOrEmpty(fileUrl))
                     fileUrl = src.Files.First().Value;
 
-                return CreateVkFile(fileUrl, src.Id, src.OwnerId, src.AccessKey, fileName);
+                return CreateVkFile(fileType, fileUrl, src.Id, src.OwnerId, src.AccessKey, fileName);
             }
 
             if (src.Player != null)
-                return new VkIncomingPlayer(src.Id, src.OwnerId, src.AccessKey) { PlayerUri = new Uri(src.Player), FileName = fileName };
+                return new VkIncomingPlayer(fileType, src.Id, src.OwnerId, src.AccessKey) { PlayerUri = new Uri(src.Player), FileName = fileName };
 
-            return new VkIncomingFile(src.Id, src.OwnerId, src.AccessKey) {FileName = fileName };
+            return new VkIncomingFile(fileType, src.Id, src.OwnerId, src.AccessKey) {FileName = fileName };
         }
 
-        private VkIncomingWebFile CreateVkFile(string url, long fileId, long ownerId, string accessKey, string fileName = null)
+        private VkIncomingWebFile CreateVkFile(string fileType,string url, long fileId, long ownerId, string accessKey, string fileName = null)
         {
             var uri = new Uri(url);
 
@@ -127,7 +163,7 @@ namespace Artice.Vk.Mapping
                 fileName = $"{fileName}{Path.GetExtension(uri.AbsolutePath)}";
             }
 
-            return new VkIncomingWebFile(_clientConstructor, fileId, ownerId, accessKey)
+            return new VkIncomingWebFile(_clientConstructor, fileType, fileId, ownerId, accessKey)
             {
                 Uri = uri,
                 FileName = fileName

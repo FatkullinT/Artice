@@ -4,6 +4,11 @@ namespace Artice.Vk.Mapping
 {
     public interface IIncomingAttachmentMapper
     {
-        Attachment Map(Vk.Models.Attachment src);
+        Attachment Map(Models.Attachment src);
+        Sticker Map(Models.Sticker src);
+        Document Map(Models.Document src);
+        Audio Map(Models.Audio src);
+        Video Map(Models.Video src);
+        Image Map(Models.Photo src);
     }
 }

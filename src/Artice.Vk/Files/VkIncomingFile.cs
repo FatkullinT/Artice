@@ -7,6 +7,8 @@ namespace Artice.Vk.Files
 {
     public class VkIncomingFile : IIncomingFile
     {
+        public string FileType { get; set; }
+
         public long FileId { get; set; }
 
         public long OwnerId { get; set; }
@@ -15,14 +17,15 @@ namespace Artice.Vk.Files
 
         public string FileName { get; set; }
 
-        public VkIncomingFile(long fileId, long ownerId, string accessKey)
+        public VkIncomingFile(string fileType, long fileId, long ownerId, string accessKey)
         {
+            FileType = fileType;
             FileId = fileId;
             OwnerId = ownerId;
             AccessKey = accessKey;
         }
 
-        public VkIncomingFile() : this(0, 0, null)
+        public VkIncomingFile() : this(null, 0, 0, null)
         { }
 
         public virtual Task<string> GetNameAsync(CancellationToken cancellationToken = default)
