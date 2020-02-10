@@ -44,7 +44,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06CB2840-CD3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk", "src\Artice.Vk\Artice.Vk.csproj", "{10E803D1-8A9E-4652-8168-2D0A310B77B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk.AspNetCore", "src\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj", "{4A04C809-2467-4246-A552-21A8266F54E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk.AspNetCore", "src\AspNetCore\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj", "{4A04C809-2467-4246-A552-21A8266F54E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

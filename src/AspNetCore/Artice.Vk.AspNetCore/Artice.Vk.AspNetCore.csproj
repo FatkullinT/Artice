@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Artice.Vk\Artice.Vk.csproj" />
-    <ProjectReference Include="..\AspNetCore\Artice.Core.AspNetCore\Artice.Core.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Artice.Vk\Artice.Vk.csproj" />
+    <ProjectReference Include="..\Artice.Core.AspNetCore\Artice.Core.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

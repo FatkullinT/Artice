@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj" />
     <ProjectReference Include="..\AspNetCore\Artice.AspNetCore\Artice.AspNetCore.csproj" />
     <ProjectReference Include="..\AspNetCore\Artice.Telegram.AspNetCore\Artice.Telegram.AspNetCore.csproj" />
+    <ProjectReference Include="..\AspNetCore\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>
