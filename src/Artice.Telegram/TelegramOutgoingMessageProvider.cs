@@ -1,125 +1,150 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Artice.Core.Models;
-using Artice.Core.Models.Enum;
+using Artice.Core.Models.Files;
 using Artice.Core.OutgoingMessages;
+using Artice.Telegram.Extensions;
 using Artice.Telegram.Mapping;
 using Artice.Telegram.Models;
 using Artice.Telegram.Models.Enums;
 using Artice.Telegram.Models.ReplyMarkups;
+using Newtonsoft.Json;
 using Message = Artice.Telegram.Models.Message;
 
 namespace Artice.Telegram
 {
-	public class TelegramOutgoingMessageProvider : IOutgoingMessageProvider
-	{
+    public class TelegramOutgoingMessageProvider : IOutgoingMessageProvider
+    {
 
 
-		private readonly IOutgoingMessageMapper _mapper;
+        private readonly IOutgoingMessageMapper _mapper;
+        private readonly IIncomingAttachmentMapper _attachmentMapper;
         private readonly Func<ITelegramHttpClient> _clientConstructor;
 
+        public string ChannelId => Consts.ChannelId;
 
-        protected int SendLimitPerSecond => Consts.SendingPerSecondLimit;
-
-
-		public string MessengerId => Consts.TelegramId;
-
-		public TelegramOutgoingMessageProvider(
-			IOutgoingMessageMapper mapper,
-			Func<ITelegramHttpClient> clientConstructor)
+        public TelegramOutgoingMessageProvider(
+            IOutgoingMessageMapper mapper,
+            IIncomingAttachmentMapper attachmentMapper,
+            Func<ITelegramHttpClient> clientConstructor)
 
         {
             _mapper = mapper;
+            _attachmentMapper = attachmentMapper;
             _clientConstructor = clientConstructor;
         }
 
-		public async Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken())
-		{
+        public async Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = new CancellationToken())
+        {
+            var clientId = message.Group != null ? message.Group.Id : message.To.Id;
 
-			var sendResult =
-				await
-					SendTextMessageAsync(message.Chat != null ? message.Chat.Id : message.To.Id,   message.Text,
-						replyMarkup: _mapper.Map(message.InlineKeyboard),
-						parseMode: ParseMode.Markdown,
-						cancellationToken: cancellationToken);
-			//return sendResult.Ok || sendResult.Code != 429;
-		}
+            if (message.Attachments != null && message.Attachments.Any())
+            {
+                var needSendMessage = !string.IsNullOrEmpty(message.Text) || message.Keyboard != null;
+                foreach (var attachment in message.Attachments)
+                {
+                    var result = await SendAttachmentMessageAsync(
+                        clientId,
+                        needSendMessage ? message.Text : null,
+                        attachment,
+                        replyMarkup: needSendMessage ? _mapper.Map(message.Keyboard) : null,
+                        parseMode: ParseMode.Markdown,
+                        cancellationToken: cancellationToken);
 
-		private Task<ApiResponse<Message>> SendTextMessageAsync(string chatId, string text, bool disableWebPagePreview = false,
-			bool disableNotification = false,
-			int replyToMessageId = 0,
-			IReplyMarkup replyMarkup = null,
-			ParseMode parseMode = ParseMode.Default,
-			CancellationToken cancellationToken = default)
-		{
-			var additionalParameters = new Dictionary<string, object>();
+                    var newAttachment = _attachmentMapper.Map(result.ResultObject).FirstOrDefault();
 
-			if (disableWebPagePreview)
-				additionalParameters.Add("disable_web_page_preview", true);
+                    if (newAttachment != null)
+                        attachment.File = new OutgoingMultiTypeFile(attachment.File, newAttachment.File);
 
-			if (parseMode != ParseMode.Default)
-				additionalParameters.Add("parse_mode", parseMode.ToModeString());
+                    needSendMessage = false;
+                }
+            }
+            else
+            {
+                await SendTextMessageAsync(
+                    clientId,
+                    message.Text,
+                    replyMarkup: _mapper.Map(message.Keyboard),
+                    parseMode: ParseMode.Default,
+                    cancellationToken: cancellationToken);
+            }
 
-			return SendMessageAsync(MessageType.TextMessage, chatId, text, disableNotification, replyToMessageId,
-				replyMarkup,
-				additionalParameters, cancellationToken);
-		}
 
-		private Task<ApiResponse<Message>> SendMessageAsync(MessageType type, string chatId, object content,
-			bool disableNotification = false,
-			int replyToMessageId = 0,
-			IReplyMarkup replyMarkup = null,
-			Dictionary<string, object> additionalParameters = null,
-			CancellationToken cancellationToken = default)
-		{
-			if (additionalParameters == null)
-				additionalParameters = new Dictionary<string, object>();
+            //return sendResult.Ok || sendResult.Code != 429;
+        }
 
-			var typeInfo = type.ToKeyValue();
+        private Task<ApiResponse<Message>> SendTextMessageAsync(string chatId, string text, bool disableWebPagePreview = false,
+            bool disableNotification = false,
+            int replyToMessageId = 0,
+            IReplyMarkup replyMarkup = null,
+            ParseMode parseMode = ParseMode.Default,
+            CancellationToken cancellationToken = default)
+        {
+            var additionalParameters = new Dictionary<string, object>();
 
-			additionalParameters.Add("chat_id", chatId);
+            if (disableWebPagePreview)
+                additionalParameters.Add("disable_web_page_preview", true);
 
-			if (disableNotification)
-				additionalParameters.Add("disable_notification", true);
+            if (parseMode != ParseMode.Default)
+                additionalParameters.Add("parse_mode", parseMode.ToModeString());
 
-			if (replyMarkup != null)
-				additionalParameters.Add("reply_markup", replyMarkup);
+            additionalParameters.Add("chat_id", chatId);
 
-			if (replyToMessageId != 0)
-				additionalParameters.Add("reply_to_message_id", replyToMessageId);
+            if (disableNotification)
+                additionalParameters.Add("disable_notification", true);
 
-			if (!string.IsNullOrEmpty(typeInfo.Value))
-				additionalParameters.Add(typeInfo.Value, content);
+            if (replyMarkup != null)
+                additionalParameters.Add("reply_markup", replyMarkup);
 
-			return _clientConstructor().PostAsync<Message>(typeInfo.Key, additionalParameters, cancellationToken);
-			
-		}
+            if (replyToMessageId != 0)
+                additionalParameters.Add("reply_to_message_id", replyToMessageId);
 
-		private Task<ApiResponse<bool>> AnswerCallbackQueryAsync(string callbackQueryId, string text = null,
-			bool showAlert = false,
-			string url = null,
-			int cacheTime = 0,
-			CancellationToken cancellationToken = default)
-		{
-			var parameters = new Dictionary<string, object>
-			{
-				{"callback_query_id", callbackQueryId},
-				{"show_alert", showAlert},
-			};
+            additionalParameters.Add("text", text);
 
-			if (!string.IsNullOrEmpty(text))
-				parameters.Add("text", text);
+            return _clientConstructor().PostAsync<Message>("sendMessage", additionalParameters, cancellationToken);
+        }
 
-			if (!string.IsNullOrEmpty(url))
-				parameters.Add("url", url);
+        private async Task<ApiResponse<Message>> SendAttachmentMessageAsync(
+            string chatId,
+            string messageText,
+            Attachment attachment,
+            bool disableNotification = false,
+            int replyToMessageId = 0,
+            IReplyMarkup replyMarkup = null,
+            ParseMode parseMode = ParseMode.Default,
+            CancellationToken cancellationToken = default)
+        {
+            var sendingParams = attachment.GetSendingParams();
 
-			if (cacheTime != 0)
-				parameters.Add("cache_time", cacheTime);
+            var additionalParameters = new Dictionary<string, string>();
 
-			return _clientConstructor().PostAsync<bool>("answerCallbackQuery", parameters, cancellationToken);
-			
-		}
-	}
+            if (parseMode != ParseMode.Default)
+                additionalParameters.Add("parse_mode", parseMode.ToModeString());
+
+            additionalParameters.Add("chat_id", chatId);
+
+            if (disableNotification)
+                additionalParameters.Add("disable_notification", bool.TrueString);
+
+            if (replyMarkup != null)
+                additionalParameters.Add("reply_markup", JsonConvert.SerializeObject(replyMarkup));
+
+            if (replyToMessageId != 0)
+                additionalParameters.Add("reply_to_message_id", replyToMessageId.ToString(CultureInfo.InvariantCulture));
+
+            if (messageText != null)
+                additionalParameters.Add("caption", messageText);
+
+            var files = new[]
+            {
+                new KeyValuePair<string, IFile>(sendingParams.ContentFieldName, attachment.File)
+            };
+
+            return await _clientConstructor().PostFilesAsync<Artice.Telegram.Models.Message>(sendingParams.Method, additionalParameters, files, cancellationToken);
+        }
+    }
 }

@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System;
+using System.Threading.Tasks;
+using Moq;
 
 namespace Artice.Testing.Core
 {
@@ -32,6 +34,11 @@ namespace Artice.Testing.Core
         public new TMock Returns<TValue>(TValue value)
         {
             return base.Returns(value) as TMock;
+        }
+
+        public TMock ReturnsAsync<TValue>(TValue value)
+        {
+            return this.Returns(Task.FromResult(value));
         }
     }
 

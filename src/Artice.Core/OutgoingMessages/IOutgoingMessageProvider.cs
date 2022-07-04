@@ -4,10 +4,10 @@ using Artice.Core.Models;
 
 namespace Artice.Core.OutgoingMessages
 {
-	public interface IOutgoingMessageProvider
-	{
-		string MessengerId { get; }
+    public interface IOutgoingMessageProvider
+    {
+        string ChannelId { get; }
 
-		Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = default);
-	}
+        Task SendMessageAsync(OutgoingMessage message, CancellationToken cancellationToken = default);
+    }
 }

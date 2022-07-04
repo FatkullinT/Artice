@@ -9,7 +9,7 @@ namespace Artice.Context
 	public interface IChatContext
 	{
 		/// <summary>
-		/// Chat or user which is communicating.
+		/// Group or user which is communicating.
 		/// </summary>
 		Recipient Recipient { get; }
 

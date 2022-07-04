@@ -15,7 +15,7 @@ namespace Artice.Core.OutgoingMessages
 		{
 			return Providers
 				.FirstOrDefault(provider =>
-					string.Equals(providerName, provider.MessengerId, StringComparison.CurrentCultureIgnoreCase));
+					string.Equals(providerName, provider.ChannelId, StringComparison.CurrentCultureIgnoreCase));
 		}
 
 		public IEnumerable<IOutgoingMessageProvider> Providers { get; }

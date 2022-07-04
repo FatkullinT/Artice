@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>9fccfae1-4f6f-4c80-99ee-5960b34e3a0b</UserSecretsId>
   </PropertyGroup>
@@ -14,8 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AspNetCore\Artice.AspNetCore\Artice.AspNetCore.csproj" />
+    <ProjectReference Include="..\AspNetCore\Artice.AspNetCore.OnPremises\Artice.AspNetCore.OnPremises.csproj" />
     <ProjectReference Include="..\AspNetCore\Artice.Telegram.AspNetCore\Artice.Telegram.AspNetCore.csproj" />
+    <ProjectReference Include="..\AspNetCore\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

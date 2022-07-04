@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Artice.Core.Models;
+using Artice.Core.Models.Files;
 using Artice.Telegram.Files;
 using Artice.Telegram.Models.Enums;
 
@@ -58,23 +59,25 @@ namespace Artice.Telegram.Mapping
                     yield return new Document()
                     {
                         File = CreateTelegramFile(src.Document.FileId, src.Document.MimeType, src.Document.FileName),
-                        Extention = Path.GetExtension(src.Document.FileName)
+                        Extension = Path.GetExtension(src.Document.FileName)
                     };
                     break;
 
                 case MessageType.StickerMessage:
                     yield return new Sticker()
                     {
+                        ChannelId = Consts.ChannelId,
                         StickerId = src.Sticker.Emoji,
+                        CollectionId = src.Sticker.SetName,
                         File = CreateTelegramFile(src.Sticker.FileId)
                     };
                     break;
             }
         }
 
-        private IFile CreateTelegramFile(string fileId, string mimeType = null, string fileName = null)
+        private IIncomingFile CreateTelegramFile(string fileId, string mimeType = null, string fileName = null)
         {
-            return new TelegramFile(_clientConstructor)
+            return new TelegramIncomingFile(_clientConstructor)
             {
                 FileId = fileId,
                 MimeType = mimeType,

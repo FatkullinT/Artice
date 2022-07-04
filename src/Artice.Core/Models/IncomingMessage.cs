@@ -10,7 +10,7 @@ namespace Artice.Core.Models
 
         public User From { get; set; }
 
-        public Chat Chat { get; set; }
+        public Group Group { get; set; }
 
         public DateTime Time { get; set; }
 

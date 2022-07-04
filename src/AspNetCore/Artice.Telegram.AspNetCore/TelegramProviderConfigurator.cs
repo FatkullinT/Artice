@@ -1,4 +1,6 @@
-﻿namespace Artice.Telegram.AspNetCore
+﻿using Artice.Telegram.Configuration;
+
+namespace Artice.Telegram.AspNetCore
 {
 	internal class TelegramProviderConfigurator : ITelegramProviderConfigurator
 	{
@@ -9,5 +11,11 @@
 			Configuration.AccessToken = accessToken;
 			return this;
 		}
-	}
+
+        public ITelegramProviderConfigurator UseUpdatesReceivingMethod(UpdatesReceivingMethod method)
+        {
+            Configuration.UpdatesReceivingMethod = method;
+            return this;
+        }
+    }
 }

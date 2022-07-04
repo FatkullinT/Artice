@@ -4,10 +4,8 @@
 	{
 		public User To { get; set; }
 
-		public Chat Chat { get; set; }
+		public Group Group { get; set; }
 
-		public InlineKeyboard InlineKeyboard { get; set; }
-
-		public GalleryWidget Gallery { get; set; }
-	}
+		public Keyboard Keyboard { get; set; }
+    }
 }

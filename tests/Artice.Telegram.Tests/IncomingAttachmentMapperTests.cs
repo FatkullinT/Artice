@@ -29,7 +29,7 @@ namespace Artice.Telegram.Tests
             var attachment = Assert.Single(markup);
             Assert.IsType<Image>(attachment);
             Assert.NotNull(attachment.File);
-            Assert.Contains(message.Photo, p => ((TelegramFile)attachment.File).FileId == p.FileId);
+            Assert.Contains(message.Photo, p => ((TelegramIncomingFile)attachment.File).FileId == p.FileId);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Artice.Telegram.Tests
             var attachment = Assert.Single(markup);
             Assert.IsType<Video>(attachment);
             Assert.NotNull(attachment.File);
-            Assert.Equal(message.Video.FileId, ((TelegramFile)attachment.File).FileId);
+            Assert.Equal(message.Video.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }
 
         [Fact]
@@ -73,7 +73,7 @@ namespace Artice.Telegram.Tests
             var attachment = Assert.Single(markup);
             Assert.IsType<Audio>(attachment);
             Assert.NotNull(attachment.File);
-            Assert.Equal(message.Audio.FileId, ((TelegramFile)attachment.File).FileId);
+            Assert.Equal(message.Audio.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace Artice.Telegram.Tests
             var attachment = Assert.Single(markup);
             Assert.IsType<Audio>(attachment);
             Assert.NotNull(attachment.File);
-            Assert.Equal(message.Voice.FileId, ((TelegramFile)attachment.File).FileId);
+            Assert.Equal(message.Voice.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }
 
         [Fact]
@@ -119,9 +119,9 @@ namespace Artice.Telegram.Tests
             //assert
             var attachment = Assert.Single(markup);
             var document = Assert.IsType<Document>(attachment);
-            Assert.Equal(".txt", document.Extention);
+            Assert.Equal(".txt", document.Extension);
             Assert.NotNull(attachment.File);
-            Assert.Equal(message.Document.FileId, ((TelegramFile)attachment.File).FileId);
+            Assert.Equal(message.Document.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace Artice.Telegram.Tests
             var sticker = Assert.IsType<Sticker>(attachment);
             Assert.NotNull(attachment.File);
             Assert.Equal(message.Sticker.Emoji, sticker.StickerId);
-            Assert.Equal(message.Sticker.FileId, ((TelegramFile)attachment.File).FileId);
+            Assert.Equal(message.Sticker.FileId, ((TelegramIncomingFile)attachment.File).FileId);
         }
 
         [Fact]

@@ -8,14 +8,14 @@ namespace Artice.AspNetCore
 {
 	public static class StartupExtensions
 	{
-		public static IServiceCollection AddArtice<TLogicModule>(this IServiceCollection services, Action<IArticeBuilder> buildAction = null)
+		public static IServiceCollection AddArticeWithLogic<TLogicModule>(this IServiceCollection services, Action<IArticeBuilder> buildAction = null)
 			where TLogicModule : class, ILogic
-		{
-			return services
-				.AddArtice(buildAction)
-				.AddScoped<ILogic, TLogicModule>()
-				.AddScoped<IIncomingMessageHandler, LogicManager>()
-				.AddSingleton<IContextStorage, ContextStorage>(); 
-		}
+        {
+            return services
+                .AddArticeCore(buildAction)
+                .AddScoped<ILogic, TLogicModule>()
+                .AddScoped<IIncomingMessageHandler, LogicManager>()
+                .AddSingleton<IContextStorage, ContextStorage>();
+        }
 	}
 }
