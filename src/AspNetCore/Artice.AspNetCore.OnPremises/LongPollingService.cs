@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Artice.Core.AspNetCore;
 using Microsoft.Extensions.Hosting;
 
-namespace Artice.Core.AspNetCore
+namespace Artice.AspNetCore.OnPremises
 {
     public class LongPollingService : IHostedService, IDisposable
     {
@@ -28,7 +29,7 @@ namespace Artice.Core.AspNetCore
         {
             foreach (var longPollingProcessor in _processors)
             {
-                longPollingProcessor.StartRequesting();
+                longPollingProcessor.StopRequesting();
             }
             return Task.CompletedTask;
         }

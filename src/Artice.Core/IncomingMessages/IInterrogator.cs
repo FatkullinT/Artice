@@ -7,6 +7,6 @@ namespace Artice.Core.IncomingMessages
 {
     public interface IInterrogator<TUpdate>
     {
-        Task<UpdatesResponse<TUpdate>> GetUpdatesAsync(Dictionary<string, string> contextData, CancellationToken cancellationToken);
+        Task<UpdatesResponse<TUpdate>> GetUpdatesAsync(Dictionary<string, string> contextData, CancellationToken cancellationToken = default);
     }
 }

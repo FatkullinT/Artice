@@ -129,7 +129,8 @@ namespace Artice.Telegram
         {
             HttpResponseMessage response = await _httpClient.PostAsync(GetMethodPath(method), httpContent, cancellationToken);
             await ThrowIfNotSuccess(response);
-            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(await response.Content.ReadAsStringAsync());
+            var responseString = await response.Content.ReadAsStringAsync();
+            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<T>>(responseString);
             ThrowIfNotSuccess(apiResponse);
             return apiResponse;
         }

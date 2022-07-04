@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Artice.Core.AspNetCore.Models;
 using Artice.Core.IncomingMessages;
 using Artice.Core.Models;
 using Microsoft.AspNetCore.Http;
@@ -23,30 +24,40 @@ namespace Artice.Core.AspNetCore
 			return Task.FromResult(request.Method == HttpMethod.Post.Method);
 		}
 
-		public virtual async Task<IncomingMessage> HandleAsync(HttpContext context)
+		public async Task<WebhookProcessingResult> HandleAsync(HttpRequest request)
 		{
-			using (Stream receiveStream = context.Request.Body)
+			using (Stream receiveStream = request.Body)
 			{
 				using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
 				{
 					var content = await readStream.ReadToEndAsync();
 					var updateObject = await ConvertJsonContent(content);
                     var incomingMessage = await _updateHandler.HandleAsync(updateObject);
-                    await MakeResponse(context, updateObject);
-					return incomingMessage;
+                    var response = await MakeResponse(updateObject);
+					var processingResult = new WebhookProcessingResult
+					{
+						IncomingMessage = incomingMessage,
+						Response = response
+					};
+
+					return processingResult;
 				}
 			}
 		}
 
-		protected virtual Task<TUpdate> ConvertJsonContent(string content)
+        protected virtual Task<TUpdate> ConvertJsonContent(string content)
 		{
 			return Task.FromResult(JsonConvert.DeserializeObject<TUpdate>(content));
         }
 
-		protected virtual Task MakeResponse(HttpContext context, TUpdate updateObject)
+		protected virtual Task<WebhookResponse> MakeResponse(TUpdate updateObject)
 		{
-			context.Response.StatusCode = StatusCodes.Status200OK;
-			return Task.CompletedTask;
+			var response = new WebhookResponse()
+			{
+				StatusCode = StatusCodes.Status200OK
+			};
+
+			return Task.FromResult(response);
 		}
 	}
 }

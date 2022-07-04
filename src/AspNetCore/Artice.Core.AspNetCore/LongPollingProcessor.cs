@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using Artice.Core.IncomingMessages;
+using Artice.Core.Logger;
+using Artice.Core.Models;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Artice.Core.AspNetCore
@@ -11,7 +13,8 @@ namespace Artice.Core.AspNetCore
         private readonly IInterrogator<TUpdate> _interrogator;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IServiceProvider _rootServiceProvider;
-        //todo: remove to external state storage
+
+        //todo: replace on external state storage
         private Dictionary<string, string> _contextData = null;
 
         public LongPollingProcessor(
@@ -27,7 +30,23 @@ namespace Artice.Core.AspNetCore
         {
             while (!_cancellationTokenSource.IsCancellationRequested)
             {
-                var updateCollection = await _interrogator.GetUpdatesAsync(_contextData, _cancellationTokenSource.Token);
+                UpdatesResponse<TUpdate> updateCollection = null;
+                try
+                {
+                    updateCollection = await _interrogator.GetUpdatesAsync(_contextData);
+                }
+                catch(Exception ex)
+                {
+                    using (var scope = _rootServiceProvider.CreateScope())
+                    {
+                        var logger = scope.ServiceProvider.GetService<ILogger>();
+                        logger.LogError(ex, $"Get updates through the {_interrogator.GetType().FullName} fault with error");
+                    }
+                    
+                    this.StopRequesting();
+                    return;
+                }
+                
                 foreach (var update in updateCollection.Updates)
                 {
                     using (var scope = _rootServiceProvider.CreateScope())

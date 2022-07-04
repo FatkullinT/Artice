@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Artice.Context;
+﻿using Artice.Context;
 using Artice.Core.Models;
 using Artice.Core.Models.Files;
 using Artice.Core.OutgoingMessages;
 using Artice.Extensions;
 
-namespace Artice.WebApp
+namespace Artice.AzureWebJob
 {
     public class Logic : ILogic
     {

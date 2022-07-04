@@ -1,6 +1,4 @@
-﻿using Artice.AspNetCore;
-using Artice.Core.AspNetCore;
-using Artice.Telegram;
+﻿using Artice.AspNetCore.OnPremises;
 using Artice.Telegram.AspNetCore;
 using Artice.Telegram.Configuration;
 using Artice.Vk.AspNetCore;

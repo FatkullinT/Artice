@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Core", "src\Artice.Core\Artice.Core.csproj", "{21093E2D-95DE-4E95-9AF9-0FFE518A6FDD}"
 EndProject
@@ -42,9 +42,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Testing", "src\Testi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{06CB2840-CD3F-4EEB-B267-3153855D6D93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk", "src\Artice.Vk\Artice.Vk.csproj", "{10E803D1-8A9E-4652-8168-2D0A310B77B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Vk", "src\Artice.Vk\Artice.Vk.csproj", "{10E803D1-8A9E-4652-8168-2D0A310B77B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.Vk.AspNetCore", "src\AspNetCore\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj", "{4A04C809-2467-4246-A552-21A8266F54E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.Vk.AspNetCore", "src\AspNetCore\Artice.Vk.AspNetCore\Artice.Vk.AspNetCore.csproj", "{4A04C809-2467-4246-A552-21A8266F54E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.AzureWebFunctions", "src\Artice.AzureWebFunctions\Artice.AzureWebFunctions.csproj", "{4CC5E095-99AA-4AC7-9628-4CF83580C63B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Artice.AzureWebJob", "src\Artice.AzureWebJob\Artice.AzureWebJob.csproj", "{D032D631-7EF7-4E33-870D-504AB0F17CC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.AspNetCore.OnPremises", "src\AspNetCore\Artice.AspNetCore.OnPremises\Artice.AspNetCore.OnPremises.csproj", "{17B8B62E-6348-4002-A05D-5390BE651BB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Artice.AspNetCore.AzureWebJob", "src\AspNetCore\Artice.AspNetCore.AzureWebJob\Artice.AspNetCore.AzureWebJob.csproj", "{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +116,22 @@ Global
 		{4A04C809-2467-4246-A552-21A8266F54E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A04C809-2467-4246-A552-21A8266F54E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A04C809-2467-4246-A552-21A8266F54E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CC5E095-99AA-4AC7-9628-4CF83580C63B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CC5E095-99AA-4AC7-9628-4CF83580C63B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CC5E095-99AA-4AC7-9628-4CF83580C63B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CC5E095-99AA-4AC7-9628-4CF83580C63B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D032D631-7EF7-4E33-870D-504AB0F17CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D032D631-7EF7-4E33-870D-504AB0F17CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D032D631-7EF7-4E33-870D-504AB0F17CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D032D631-7EF7-4E33-870D-504AB0F17CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17B8B62E-6348-4002-A05D-5390BE651BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17B8B62E-6348-4002-A05D-5390BE651BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17B8B62E-6348-4002-A05D-5390BE651BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17B8B62E-6348-4002-A05D-5390BE651BB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +153,10 @@ Global
 		{0EE6371E-543A-413C-BC07-0546FC0F6AE5} = {C6178002-FA50-4061-AF68-FE7B558A946E}
 		{10E803D1-8A9E-4652-8168-2D0A310B77B0} = {06CB2840-CD3F-4EEB-B267-3153855D6D93}
 		{4A04C809-2467-4246-A552-21A8266F54E5} = {A5652DCC-9481-46E7-B00F-2E394F775172}
+		{4CC5E095-99AA-4AC7-9628-4CF83580C63B} = {06CB2840-CD3F-4EEB-B267-3153855D6D93}
+		{D032D631-7EF7-4E33-870D-504AB0F17CC5} = {06CB2840-CD3F-4EEB-B267-3153855D6D93}
+		{17B8B62E-6348-4002-A05D-5390BE651BB4} = {A5652DCC-9481-46E7-B00F-2E394F775172}
+		{9E6F2314-6B18-457E-9E9C-D1B1376ACCC0} = {A5652DCC-9481-46E7-B00F-2E394F775172}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {646A9E83-6A97-46C3-BB81-051664256F21}

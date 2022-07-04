@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.Threading.Tasks;
 using Artice.Core.AspNetCore;
+using Artice.Core.AspNetCore.Models;
 using Artice.Core.IncomingMessages;
 using Artice.Vk.Configuration;
 using Artice.Vk.Models;
 using Artice.Vk.Models.Enum;
-using Microsoft.AspNetCore.Http;
 
 namespace Artice.Vk.AspNetCore
 {
@@ -19,19 +19,21 @@ namespace Artice.Vk.AspNetCore
             _configuration = configuration;
         }
 
-        protected override async Task MakeResponse(HttpContext context, Update updateObject)
+        protected override async Task<WebhookResponse> MakeResponse(Update updateObject)
         {
-            await base.MakeResponse(context, updateObject);
+            var response = await base.MakeResponse(updateObject);
 
             if (updateObject.Type == UpdateType.Confirmation && 
                 string.Equals(updateObject.GroupId.ToString(CultureInfo.InvariantCulture), _configuration.GroupId))
             {
-                await context.Response.WriteAsync(_configuration.WebhookVerifyToken);
+                response.Body = _configuration.WebhookVerifyToken;
             }
             else
             {
-                await context.Response.WriteAsync("ok");
+                response.Body = "ok";
             }
+
+            return response;
         }
     }
 }

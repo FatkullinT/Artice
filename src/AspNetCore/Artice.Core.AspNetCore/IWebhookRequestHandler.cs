@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Artice.Core.Models;
+using Artice.Core.AspNetCore.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Artice.Core.AspNetCore
@@ -8,6 +8,6 @@ namespace Artice.Core.AspNetCore
 	{
 		Task<bool> CheckRequest(HttpRequest request);
 
-		Task<IncomingMessage> HandleAsync(HttpContext context);
+		Task<WebhookProcessingResult> HandleAsync(HttpRequest request);
 	}
 }

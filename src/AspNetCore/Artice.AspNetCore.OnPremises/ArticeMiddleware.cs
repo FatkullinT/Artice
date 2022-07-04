@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Artice.Core.AspNetCore;
+using Artice.Core.AspNetCore.Models;
 using Artice.Core.IncomingMessages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Artice.Core.AspNetCore
+namespace Artice.AspNetCore.OnPremises
 {
 	public class ArticeMiddleware
 	{
@@ -43,16 +45,18 @@ namespace Artice.Core.AspNetCore
 					var updateHandler = (IWebhookRequestHandler)scope.ServiceProvider.GetService(type);
 					if (updateHandler != null && await updateHandler.CheckRequest(context.Request))
 					{
-						var incomingMessage = await updateHandler.HandleAsync(context);
+						var result = await updateHandler.HandleAsync(context.Request);
 
-                        if (incomingMessage == null)
+						await SetResponseToContext(context, result.Response);
+
+                        if (result.IncomingMessage == null)
                             return;
 
                         var handlers = scope.ServiceProvider.GetServices<IIncomingMessageHandler>();
 
 						foreach (var handler in handlers)
 						{
-							await handler.Handle(incomingMessage);
+							await handler.Handle(result.IncomingMessage);
 						}
 
 						return;
@@ -62,5 +66,15 @@ namespace Artice.Core.AspNetCore
 
 			await _next.Invoke(context);
 		}
-	}
+
+        private async Task SetResponseToContext(HttpContext context, WebhookResponse response)
+        {
+			context.Response.StatusCode = response.StatusCode;
+
+			if (string.IsNullOrEmpty(response.Body))
+				return;
+
+			await context.Response.WriteAsync(response.Body);
+        }
+    }
 }

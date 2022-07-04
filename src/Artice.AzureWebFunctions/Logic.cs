@@ -9,7 +9,7 @@ using Artice.Core.Models.Files;
 using Artice.Core.OutgoingMessages;
 using Artice.Extensions;
 
-namespace Artice.WebApp
+namespace Artice.AzureWebFunctions
 {
     public class Logic : ILogic
     {
