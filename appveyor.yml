@@ -4,7 +4,6 @@ environment:
   CODECOV_TOKEN:
     secure: tfuWf0tytpb8+HItUm0jhB/sXOx0K3GJMHLbn3+FKV1EfnCncRE6iAHz0Ytlt9nC
 
-
 branches:
   only:
   - master
@@ -22,7 +21,7 @@ init:
       }
       Set-AppveyorBuildVariable "FileVersion" "$env:ProductVersion.0.$env:APPVEYOR_BUILD_NUMBER"
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 configuration: Release
 dotnet_csproj:
   patch: true
