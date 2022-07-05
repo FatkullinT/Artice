@@ -10,11 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="content\UpdatesFunction.cs" />
+  </ItemGroup>
+	
+	<ItemGroup>
     <None Remove="UpdatesFunction.cs.pp" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="UpdatesFunction.cs.pp" />
+	  <Content Include="content\UpdatesFunction.cs" PackagePath="contentFiles\any\any" />
+	  <Content Include="content\UpdatesFunction.cs.pp" PackagePath="content" />
   </ItemGroup>
 
 
