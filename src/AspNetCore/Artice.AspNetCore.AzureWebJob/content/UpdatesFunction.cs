@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Artice.AzureWebFunctions
+namespace Artice.AspNetCore.AzureWebJob
 {
     public class UpdatesFunction : UpdatesFunctionBase
     {
