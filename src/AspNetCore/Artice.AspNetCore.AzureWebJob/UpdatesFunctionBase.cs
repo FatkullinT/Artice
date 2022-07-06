@@ -10,7 +10,7 @@ using Artice.Core.Logger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Artice.AspNetCore.AzureWebJob.Functions.Http
+namespace Artice.AspNetCore.AzureWebJob
 {
     public class UpdatesFunctionBase
     {
