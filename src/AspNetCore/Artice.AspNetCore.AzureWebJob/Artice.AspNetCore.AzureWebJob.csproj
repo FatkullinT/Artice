@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<Compile Update="content\UpdatesFunction.cs" Pack="true" PackagePath="contentFiles\any\any" />
-	<Content Include="content\UpdatesFunction.cs.pp" PackagePath="content" />
+	<Compile Update="Functions\Http\UpdatesFunction.cs" Pack="true" PackagePath="contentFiles\any\any\" />
+	<Content Include="Functions\Http\UpdatesFunction.cs.pp" Pack="true" PackagePath="content" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using Artice.AspNetCore.AzureWebJob;
 using Artice.Core.AspNetCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Artice.AspNetCore.AzureWebJob
+namespace Artice.AspNetCore.AzureWebJob.Functions.Http
 {
     public class UpdatesFunction : UpdatesFunctionBase
     {
@@ -20,7 +19,7 @@ namespace Artice.AspNetCore.AzureWebJob
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "updates/{provider}")] HttpRequest req,
             string provider)
         {
-            var webHookResult = await base.ProcessUpdate(req, provider);
+            var webHookResult = await ProcessUpdate(req, provider);
             return GetActionResult(webHookResult);
         }
 

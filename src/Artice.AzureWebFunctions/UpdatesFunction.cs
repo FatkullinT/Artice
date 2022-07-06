@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Artice.AspNetCore.AzureWebJob;
+using Artice.AspNetCore.AzureWebJob.Functions.Http;
 using Artice.Core.AspNetCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
